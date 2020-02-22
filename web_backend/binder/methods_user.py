@@ -13,14 +13,21 @@ def hash_pw(password: str):
     return hashed.decode("UTF-8")
 
 
-@auth.verify_password
-def verify_password(uname: str, password: str):
-    user = User.query.filter_by(username=uname).first()
-    if user is not None:
-        if bcrypt.checkpw(password.encode("ascii"),
+def verify_password(data):
+    user = User.query.filter_by(username=data["username"]).first()
+    if user is None:
+        return None
+    role = Role.query.filter_by(id=user.role).first()
+    response = {
+        "userId": user.id,
+        "role": role.name,
+        "access": "access",
+        "refresh": "refresh"}
+    if user:
+        if bcrypt.checkpw(data["password"].encode("ascii"),
                           user.password_hash.encode("ascii")):
-            return True
-    return False
+            return response
+    return None
 
 
 def users_by_role(role):
