@@ -1,11 +1,12 @@
 from flask import Flask
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
-
+from flask_httpauth import HTTPBasicAuth
 from web_backend.config import Config
 
 db = SQLAlchemy()
 migrate = Migrate()
+auth = HTTPBasicAuth()
 
 
 def create_app():
@@ -16,7 +17,7 @@ def create_app():
     migrate.init_app(app, db)
 
     from web_backend.api import bp as api_bp
-    app.register_blueprint(api_bp, url_prefix="api")
+    app.register_blueprint(api_bp)
 
     return app
 
