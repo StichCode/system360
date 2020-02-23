@@ -1,4 +1,4 @@
-from flask import request, jsonify
+from flask import request, jsonify, g
 
 from web_backend import db, auth
 from web_backend.api import bp
@@ -20,7 +20,7 @@ def login():
     response = verify_password(data)
     if response is not None:
         return jsonify(response)
-    return error_response(401)
+    return error_response(403)
 
 
 @bp.route("/users", methods=["GET"])
