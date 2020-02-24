@@ -2,11 +2,9 @@ import random
 
 import bcrypt
 
-from web_backend import auth
 from web_backend.database.models import User, Role
 
 
-@auth.hash_password
 def hash_pw(password: str):
     salt = bcrypt.gensalt(random.randint(15, 31))
     hashed = bcrypt.hashpw(password.encode("ascii"), salt)
@@ -18,11 +16,12 @@ def verify_password(data):
     if user is None:
         return None
     role = Role.query.filter_by(id=user.role).first()
+    if role is None:
+        return None
     response = {
         "userId": user.id,
         "role": role.name,
-        "access": "access",
-        "refresh": "refresh"}
+        }
     if user:
         if bcrypt.checkpw(data["password"].encode("ascii"),
                           user.password_hash.encode("ascii")):
