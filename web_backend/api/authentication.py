@@ -6,7 +6,7 @@ from web_backend import db
 from web_backend.api import bp
 from web_backend.api.errors import error_response
 from web_backend.binder.methods_user import verify_password, users_by_role, hash_pw
-from web_backend.database.models import User
+from web_backend.database.models import User, Role
 
 
 @bp.route("/test", methods=["GET"])
@@ -17,8 +17,9 @@ def test():
 @bp.route("/reg", methods=["POST"])
 def registration():
     data = request.get_json() or {}
-    if not data or ["username", "password", "email", "first_name", "last_name", "role"] not in data:
+    if not data or ["username", "password", "email", "first_name", "last_name", "role"] not in list(data.keys()):
         return jsonify(message="No any data for registration"), 403
+    role = Role.query.filter_by(name=data["role"]).first()
     user = User(
         username=data["username"],
         email=data["email"],
@@ -26,7 +27,7 @@ def registration():
         password_hash=hash_pw(data["password"]),
         first_name=data["first_name"],
         last_name=data["last_name"],
-        role=data["role"]
+        role=role.id
     )
     db.session.add(user)
     db.session.commit()
