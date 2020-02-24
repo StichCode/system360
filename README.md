@@ -7,6 +7,7 @@
     
     
 ##### Urls of project:
-    /api/auth
-    /api/users?role=Manager
-    /api/refresh
+    POST /api/auth
+    POST /api/reg
+    GET /api/users?role=Manager
+    POST /api/refresh

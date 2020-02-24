@@ -1,10 +1,12 @@
 from flask import request, jsonify
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, create_refresh_token
+from flask_jwt_extended import create_access_token, jwt_required, create_refresh_token
 from werkzeug.exceptions import BadRequestKeyError
 
+from web_backend import db
 from web_backend.api import bp
 from web_backend.api.errors import error_response
-from web_backend.binder.methods_user import verify_password, users_by_role
+from web_backend.binder.methods_user import verify_password, users_by_role, hash_pw
+from web_backend.database.models import User
 
 
 @bp.route("/test", methods=["GET"])
@@ -14,7 +16,22 @@ def test():
 
 @bp.route("/reg", methods=["POST"])
 def registration():
-    return jsonify(message="Not worked route"), 400
+    data = request.get_json() or {}
+    if not data or ["username", "password", "email", "first_name", "last_name", "role"] not in data:
+        return jsonify(message="No any data for registration"), 403
+    user = User(
+        username=data["username"],
+        email=data["email"],
+        phone=data["phone"] or "",
+        password_hash=hash_pw(data["password"]),
+        first_name=data["first_name"],
+        last_name=data["last_name"],
+        role=data["role"]
+    )
+    db.session.add(user)
+    db.session.commit()
+
+    return jsonify(message="new user was be created"), 201
 
 
 @bp.route("/auth", methods=["POST"])
