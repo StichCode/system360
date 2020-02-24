@@ -31,17 +31,17 @@ def verify_password(data):
 
 def users_by_role(role):
     all_users = []
-    role_id = Role.query.filter_by(name=role).first()
-    if role_id is None:
+    role = Role.query.filter_by(name=role).first()
+    if role is None:
         return all_users
-    users = User.query.filter_by(role=role_id.id).all()
+    users = User.query.filter_by(role=role.id).all()
     if users is None:
         return all_users
     for user in users:
         all_users.append({
             "userId": user.id,
             "userName": user.username,
-            "roleId": role,
+            "role": role,
             "firstName": user.first_name,
             "lastName": user.last_name,
             "userPhone": user.phone

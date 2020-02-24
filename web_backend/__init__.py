@@ -18,7 +18,7 @@ def create_app():
     jwt.init_app(app)
 
     from web_backend.api import bp as api_bp
-    app.register_blueprint(api_bp)
+    app.register_blueprint(api_bp, url_prefix="/api")
 
     return app
 
