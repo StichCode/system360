@@ -21,7 +21,7 @@ def registration():
     if not data:
         return jsonify(message="No any data for registration"), 403
     flag = [key for key in list(data.keys()) if key not in
-            ["username", "password", "email", "first_name", "last_name", "role"]]
+            ["username", "password", "email", "first_name", "last_name", "role"]]  # FIXME without phone key
     if flag:
         return jsonify(message="No any data for registration"), 403
     role = Role.query.filter_by(name=data["role"]).first()

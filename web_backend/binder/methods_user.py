@@ -41,7 +41,7 @@ def users_by_role(role):
         all_users.append({
             "userId": user.id,
             "userName": user.username,
-            "role": role,
+            "role": role.name,
             "firstName": user.first_name,
             "lastName": user.last_name,
             "userPhone": user.phone
