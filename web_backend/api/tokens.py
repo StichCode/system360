@@ -11,7 +11,7 @@ from web_backend.database.models import User
 def refresh():
     username = get_jwt_identity()
     response = {
-        "access_token": create_access_token(identity=username)
+        "access": create_access_token(identity=username)
     }
     return jsonify(response)
 
