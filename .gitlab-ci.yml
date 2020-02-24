@@ -1,6 +1,25 @@
+default:
+  before_script:
+    - apt-get update -qq
+    - apt-get install -y -qq rsync
+    - export ENV_DIR=$SERVER_TEST_DIR/$CI_COMMIT_REF_NAME
+
 stages:
-  - deploy
   - unittest
+  - deploy
+
+
+test:
+  stage: unittest
+  script:
+    - mkdir -p $ENV_DIR/current
+    - rsync -a --info=progress2 --delete . $ENV_DIR/current/
+    - rm -rf $ENV_DIR/venv
+    - python3.8 -m venv $ENV_DIR/venv
+    - source $ENV_DIR/venv/bin/activate && pip install -r $ENV_DIR/current/requirements.txt
+  tags:
+    - sys360
+  when: manual
 
 
 deploy:
@@ -15,12 +34,3 @@ deploy:
     - systemctl start sys360.service
   tags:
     - sys360
-
-
-test:
-  stage: unittest
-  script:
-    - echo lol
-  tags:
-    - sys360
-  when: manual

@@ -1,7 +1,6 @@
 import unittest
 
 from main import app
-from web_backend import db
 
 
 class TestCase(unittest.TestCase):

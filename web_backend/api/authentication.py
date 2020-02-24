@@ -1,4 +1,5 @@
 from flask import request, jsonify
+from flask_cors import cross_origin
 from flask_jwt_extended import create_access_token, create_refresh_token
 
 from web_backend.api import bp
@@ -14,8 +15,9 @@ def test():
 @bp.route("/auth", methods=["POST"])
 def login():
     data = request.get_json() or {}
+    print(data)
     if not data:
-        return jsonify(message="No data for authorization"), 403
+        return jsonify(message="No data for authorization"), 402
     response = verify_password(data)
     if response is not None:
         response['access'] = create_access_token(identity=data["username"])

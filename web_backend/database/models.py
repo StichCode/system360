@@ -17,11 +17,11 @@ class User(db.Model):
 
 class Role(db.Model):
     """
-    Owner
-    Manager
-    Auditor
-    Ordinary worker
-    Administrator
+    owner
+    manager
+    auditor
+    worker
+    admin
     """
     __tablename__ = 'roles'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
