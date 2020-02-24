@@ -27,9 +27,22 @@ class Role(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(50), index=True, unique=True)
 
-# Now need 1 to 1
-# class UserRoles(db.Model):
-#     __tablename__ = 'user_roles'
-#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-#     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
-#     role_id = db.Column(db.Integer, db.ForeignKey('roles.id', ondelete='CASCADE'))
+
+class Shops(db.Model):
+    __tablename__ = 'shops'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    address = db.Column(db.String(128))
+    phone = db.Column(db.String(12))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+
+class Objects(db.Model):
+    __tablename__ = 'objects'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title = db.Column(db.String(64))
+    type = db.Column(db.String(64))
+    x = db.Column(db.Integer)
+    y = db.Column(db.Integer)
+    shop_id = db.Column(db.Integer, db.ForeignKey('shops.id'))
+
+

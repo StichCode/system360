@@ -11,3 +11,5 @@
     POST /api/reg
     GET /api/users?role=Manager
     POST /api/refresh
+    GET /api/shops?userId=1
+    GET /api/map?shopId=1
