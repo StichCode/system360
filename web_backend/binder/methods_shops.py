@@ -11,7 +11,7 @@ def get_shops_by_user(user_id):
             "shopId": shop.id,
             "shopAddress": shop.address,
             "shopPhone": shop.phone,
-            "userId": user_id,
+            "userId": int(user_id),
         })
     return result
 

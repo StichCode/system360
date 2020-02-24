@@ -18,7 +18,7 @@ def login():
         return jsonify(message="No data for authorization"), 403
     response = verify_password(data)
     if response is not None:
-        response['access_token'] = create_access_token(identity=data["username"])
-        response['refresh_token'] = create_refresh_token(identity=data["username"])
+        response['access'] = create_access_token(identity=data["username"])
+        response['refresh'] = create_refresh_token(identity=data["username"])
         return jsonify(response), 200
     return error_response(403)
