@@ -1,1 +1,26 @@
-default:
+stages:
+  - deploy
+  - unittest
+
+
+deploy:
+  stage: deploy
+  timeout: 20m
+  before_script:
+    - systemctl stop sys360.service
+  script:
+    - rsync -a --info=progress2 --delete . $SERVER_DIR/app
+    - rm -rf $SERVER_DIR/venv
+    - python3.8 -m venv $SERVER_DIR/venv && source $SERVER_DIR/venv/bin/activate && pip install -r $SERVER_DIR/app/requirements.txt && export FLASK=$SERVER_DIR/app/main.py && flask db migrate && flask db upgrade
+    - systemctl start sys360.service
+  tags:
+    - sys360
+
+
+test:
+  stage: unittest
+  script:
+    - echo lol
+  tags:
+    - sys360
+  when: manual
