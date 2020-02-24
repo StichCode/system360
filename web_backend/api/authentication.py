@@ -16,14 +16,24 @@ def test():
 
 @bp.route("/reg", methods=["POST"])
 def registration():
+    # FIXME сделать проверку на существующий юзернейм и почту
     data = request.get_json() or {}
-    if not data or ["username", "password", "email", "first_name", "last_name", "role"] not in list(data.keys()):
+    if not data:
+        return jsonify(message="No any data for registration"), 403
+    flag = [key for key in list(data.keys()) if key not in
+            ["username", "password", "email", "first_name", "last_name", "role"]]
+    if flag:
         return jsonify(message="No any data for registration"), 403
     role = Role.query.filter_by(name=data["role"]).first()
+    phone = ""
+    try:
+        phone = data["phone"]
+    except KeyError:
+        pass
     user = User(
         username=data["username"],
         email=data["email"],
-        phone=data["phone"] or "",
+        phone=phone,
         password_hash=hash_pw(data["password"]),
         first_name=data["first_name"],
         last_name=data["last_name"],
@@ -60,5 +70,3 @@ def get_users_by_role():
     if users:
         return jsonify(users)
     return jsonify(status=400, message="No users with this roles.")
-
-
