@@ -3,34 +3,50 @@ default:
     - apt-get update -qq
     - apt-get install -y -qq rsync
     - export ENV_DIR=$SERVER_TEST_DIR/$CI_COMMIT_REF_NAME
+    - export DATABASE_URL=$DATABASE_URL
+    - export TEST_DATABASE_URL=$TEST_DATABASE_URL
+    - export PRODUCTION_DATABASE_URL=$PRODUCTION_DATABASE_URL
+    - export FLASK_APP=$LOCAL_DIR/app/main.py
 
 stages:
   - unittest
-  - deploy
+  - dev-deploy
+  - prod-deploy
 
 
 test:
   stage: unittest
   script:
+    - export FLASK_CONFIG=web_backend.config.TestingConfig
     - mkdir -p $ENV_DIR/current
     - rsync -a --info=progress2 --delete . $ENV_DIR/current/
     - rm -rf $ENV_DIR/venv
     - python3.8 -m venv $ENV_DIR/venv
-    - source $ENV_DIR/venv/bin/activate && pip install -r $ENV_DIR/current/requirements.txt
+    - source $ENV_DIR/venv/bin/activate && pip install -r $ENV_DIR/current/requirements.txt && flask db migrate && flask upgrade
   tags:
-    - sys360
+    - sys-ya
   when: manual
 
 
-deploy:
-  stage: deploy
+dev-deploy:
+  stage: dev-deploy
   timeout: 20m
   before_script:
     - systemctl stop sys360.service
   script:
     - rsync -a --info=progress2 --delete . $SERVER_DIR/app
-    - rm -rf $SERVER_DIR/venv
-    - python3.8 -m venv $SERVER_DIR/venv && source $SERVER_DIR/venv/bin/activate && pip install -r $SERVER_DIR/app/requirements.txt && export FLASK=$SERVER_DIR/app/main.py && flask db migrate && flask db upgrade
+    - rm -rf $LOCAL_DIR/venv
+    - export FLASK_CONFIG=web_backend.config.DevelopmentConfig
+    - python3.8 -m venv $LOCAL_DIR/venv && source $LOCAL_DIR/venv/bin/activate && pip install -r $LOCAL_DIR/app/requirements.txt && flask db migrate && flask db upgrade
     - systemctl start sys360.service
   tags:
-    - sys360
+    - sys-ya
+
+prod-deploy:
+  stage: prod-deploy
+  timeout: 20m
+  script:
+    - echo prod
+  tags:
+    - sys-ya
+  when: manual

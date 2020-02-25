@@ -13,3 +13,11 @@
     POST /api/refresh
     GET /api/shops?userId=1
     GET /api/map?shopId=1
+    
+    
+##### ENV for project
+     FLASK_CONFIG            web_backend.config.BaseConfig
+     DATABASE_URL            postgresql+psycopg2://user:pass@url:port/database
+     TEST_DATABASE_URL
+     PRODUCTION_DATABASE_URL
+     FLASK_APP               app/main.py

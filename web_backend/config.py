@@ -1,9 +1,24 @@
 import os
 
 
-class Config(object):
-    SECRET_KEY = ""
-    JWT_SECRET_KEY = "secret-key"  # FIXME get this value from memcached
-    SQLALCHEMY_DATABASE_URI = os.environ.setdefault("DATABASE_URL",
-                                                    "postgresql+psycopg2://sys360:sys360@localhost:5432/system360")
+class BaseConfig(object):
+    SECRET_KEY = os.urandom(20)
+    JWT_SECRET_KEY = os.urandom(20)  # FIXME get this value from memcached
+    CORS = False
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+
+class TestingConfig(BaseConfig):
+    DEBUG = True
+    SQLALCHEMY_DATABASE_URI = os.environ.get("TEST_DATABASE_URL")
+
+
+class DevelopmentConfig(BaseConfig):
+    CORS = True
+    DEBUG = True
+
+
+class ProductionConfig(BaseConfig):
+    SQLALCHEMY_DATABASE_URI = os.environ.get("PRODUCTION_DATABASE_URL")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
