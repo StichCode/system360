@@ -55,9 +55,10 @@ def new_user(data):
     result = {}
     for field in ["username", "email", "phone", "password", "first_name", "last_name", "role", "franchise_id"]:
         if field in data:
-            result[field] = data["field"]
+            result[field] = data[field]
         if field == "password":
             result[field] = hash_pw(data["password"])
         if field == "role":
-            result["field"] = role.id
+            result[field] = role.id
+    print(result)
     return User(**result)
