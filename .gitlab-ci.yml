@@ -32,13 +32,13 @@ dev-deploy:
   stage: dev-deploy
   timeout: 20m
   before_script:
-    - systemctl stop sys360.service
+    - sudo systemctl stop sys360.service
   script:
     - rsync -a --info=progress2 --delete . $SERVER_DIR/app
     - rm -rf $LOCAL_DIR/venv
     - export FLASK_CONFIG=web_backend.config.DevelopmentConfig
     - python3.8 -m venv $LOCAL_DIR/venv && source $LOCAL_DIR/venv/bin/activate && pip install -r $LOCAL_DIR/app/requirements.txt && flask db migrate && flask db upgrade
-    - systemctl start sys360.service
+    - sudo systemctl start sys360.service
   tags:
     - sys-ya
 
