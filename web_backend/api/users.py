@@ -4,7 +4,7 @@ from werkzeug.exceptions import BadRequestKeyError
 
 from web_backend import db
 from web_backend.api import bp
-from web_backend.binder.methods_user import users_by_role, hash_pw
+from web_backend.binder.user import users_by_role, hash_pw, new_user
 from web_backend.database.models import User, Role
 
 
@@ -24,29 +24,16 @@ def get_users_by_role():
 
 @bp.route("/reg", methods=["POST"])
 def registration():
-    # FIXME сделать проверку на существующий юзернейм и почту
     data = request.get_json() or {}
-    if not data:
-        return jsonify(message="No any data for registration"), 403
-    flag = [key for key in list(data.keys()) if key not in
-            ["username", "password", "email", "first_name", "last_name", "role"]]  # FIXME without phone key
-    if flag:
-        return jsonify(message="No any data for registration"), 403
-    role = Role.query.filter_by(name=data["role"]).first()
-    phone = ""
-    try:
-        phone = data["phone"]
-    except KeyError:
-        pass
-    user = User(
-        username=data["username"],
-        email=data["email"],
-        phone=phone,
-        password_hash=hash_pw(data["password"]),
-        first_name=data["first_name"],
-        last_name=data["last_name"],
-        role=role.id
-    )
+
+    if 'username' not in data or 'email' not in data or 'password' not in data or 'role' not in data:
+        return jsonify(message='Must include username, email, role and password fields'), 403
+    if User.query.filter_by(username=data['username']).first():
+        return jsonify(message='User with the same name already exists.'), 403
+    if User.query.filter_by(email=data['email']).first():
+        return jsonify(message='User with this e-mail already exists.'), 403
+
+    user = new_user(data)
     db.session.add(user)
     db.session.commit()
 

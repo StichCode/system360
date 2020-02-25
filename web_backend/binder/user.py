@@ -47,3 +47,17 @@ def users_by_role(role):
             "userPhone": user.phone
         })
     return all_users
+
+
+def new_user(data):
+    role = Role.query.filter_by(name=data["role"]).first()
+
+    result = {}
+    for field in ["username", "email", "phone", "password", "first_name", "last_name", "role"]:
+        if field in data:
+            result[field] = data["field"]
+        if field == "password":
+            result[field] = hash_pw(data["password"])
+        if field == "role":
+            result["field"] = role.id
+    return User(result)

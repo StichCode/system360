@@ -4,7 +4,7 @@ from flask_jwt_extended import create_access_token, create_refresh_token
 
 from web_backend.api import bp
 from web_backend.api.errors import error_response
-from web_backend.binder.methods_user import verify_password
+from web_backend.binder.user import verify_password
 
 
 @bp.route("/test", methods=["GET"])
