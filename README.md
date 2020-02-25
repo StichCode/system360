@@ -16,7 +16,7 @@
     
     
 ##### ENV for project
-     FLASK_CONFIG            web_backend.config.BaseConfig
+     FLASK_CONFIG            config.BaseConfig
      DATABASE_URL            postgresql+psycopg2://user:pass@url:port/database
      TEST_DATABASE_URL
      PRODUCTION_DATABASE_URL

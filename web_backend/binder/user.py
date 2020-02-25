@@ -60,4 +60,4 @@ def new_user(data):
             result[field] = hash_pw(data["password"])
         if field == "role":
             result["field"] = role.id
-    return User(result)
+    return User(**result)
