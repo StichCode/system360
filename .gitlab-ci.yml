@@ -34,7 +34,7 @@ dev-deploy:
   before_script:
     - sudo systemctl stop sys360.service
   script:
-    - rsync -a --info=progress2 --delete . $SERVER_DIR/app
+    - rsync -a --info=progress2 --delete . $LOCAL_DIR/app
     - rm -rf $LOCAL_DIR/venv
     - export FLASK_CONFIG=web_backend.config.DevelopmentConfig
     - python3.8 -m venv $LOCAL_DIR/venv && source $LOCAL_DIR/venv/bin/activate && pip install -r $LOCAL_DIR/app/requirements.txt && flask db migrate && flask db upgrade
