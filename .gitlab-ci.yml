@@ -7,7 +7,7 @@ default:
     - export DATABASE_URL=$DATABASE_URL
     - export TEST_DATABASE_URL=$TEST_DATABASE_URL
     - export PRODUCTION_DATABASE_URL=$PRODUCTION_DATABASE_URL
-    - export FLASK_APP=$LOCAL_DIR/app/main.py
+
 
 stages:
   - unittest
@@ -37,7 +37,7 @@ dev-deploy:
     - rsync -a --info=progress2 --delete . $LOCAL_DIR/app
     - rm -rf $LOCAL_DIR/venv
     - export FLASK_CONFIG=config.DevelopmentConfig
-    - python3.8 -m venv $LOCAL_DIR/venv && source $LOCAL_DIR/venv/bin/activate && pip install -r $LOCAL_DIR/app/requirements.txt && cd app/ && flask db migrate && flask db upgrade
+    - python3.8 -m venv $LOCAL_DIR/venv && source $LOCAL_DIR/venv/bin/activate && pip install -r $LOCAL_DIR/app/requirements.txt &&  export FLASK_APP=$LOCAL_DIR/app/main.py && flask db migrate && flask db upgrade
     - sudo systemctl start sys360.service
   tags:
     - sys-ya
