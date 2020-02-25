@@ -2,6 +2,7 @@ default:
   before_script:
     - apt-get update -qq
     - apt-get install -y -qq rsync
+    - apt-get install -y -qq python3.8 python3-dev
     - export ENV_DIR=$SERVER_TEST_DIR/$CI_COMMIT_REF_NAME
     - export DATABASE_URL=$DATABASE_URL
     - export TEST_DATABASE_URL=$TEST_DATABASE_URL
