@@ -6,7 +6,7 @@ from web_backend.database.models import User, Role
 
 
 def hash_pw(password: str):
-    salt = bcrypt.gensalt(random.randint(15, 31))
+    salt = bcrypt.gensalt(12)
     hashed = bcrypt.hashpw(password.encode("ascii"), salt)
     return hashed.decode("UTF-8")
 
