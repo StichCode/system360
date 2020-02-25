@@ -2,7 +2,7 @@ default:
   before_script:
     - apt-get update -qq
     - apt-get install -y -qq rsync
-    - apt-get install -y -qq python3.8 python3-dev python3.8-venv python3-setuptools libpq-dev
+    - apt-get install -y -qq python3.8 python3.8-dev python3.8-venv python3-setuptools libpq-dev
     - export ENV_DIR=$SERVER_TEST_DIR/$CI_COMMIT_REF_NAME
     - export DATABASE_URL=$DATABASE_URL
     - export TEST_DATABASE_URL=$TEST_DATABASE_URL
@@ -18,7 +18,7 @@ stages:
 test:
   stage: unittest
   script:
-    - export FLASK_CONFIG=web_backend.config.TestingConfig
+    - export FLASK_CONFIG=config.TestingConfig
     - mkdir -p $ENV_DIR/current
     - rsync -a --info=progress2 --delete . $ENV_DIR/current/
     - rm -rf $ENV_DIR/venv
@@ -36,7 +36,7 @@ dev-deploy:
     - sudo systemctl stop sys360.service
     - rsync -a --info=progress2 --delete . $LOCAL_DIR/app
     - rm -rf $LOCAL_DIR/venv
-    - export FLASK_CONFIG=web_backend.config.DevelopmentConfig
+    - export FLASK_CONFIG=config.DevelopmentConfig
     - python3.8 -m venv $LOCAL_DIR/venv && source $LOCAL_DIR/venv/bin/activate && pip install -r $LOCAL_DIR/app/requirements.txt && flask db migrate && flask db upgrade
     - sudo systemctl start sys360.service
   tags:
