@@ -53,7 +53,7 @@ def new_user(data):
     role = Role.query.filter_by(name=data["role"]).first()
 
     result = {}
-    for field in ["username", "email", "phone", "password", "first_name", "last_name", "role"]:
+    for field in ["username", "email", "phone", "password", "first_name", "last_name", "role", "franchise_id"]:
         if field in data:
             result[field] = data["field"]
         if field == "password":

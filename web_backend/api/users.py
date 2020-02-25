@@ -26,7 +26,8 @@ def get_users_by_role():
 def registration():
     data = request.get_json() or {}
 
-    if 'username' not in data or 'email' not in data or 'password' not in data or 'role' not in data:
+    if 'username' not in data or 'email' not in data or 'password' not in data or 'role' not in data \
+            or 'franchise_id' not in data:
         return jsonify(message='Must include username, email, role and password fields'), 403
     if User.query.filter_by(username=data['username']).first():
         return jsonify(message='User with the same name already exists.'), 403
