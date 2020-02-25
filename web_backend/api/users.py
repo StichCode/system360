@@ -5,7 +5,7 @@ from werkzeug.exceptions import BadRequestKeyError
 from web_backend import db
 from web_backend.api import bp
 from web_backend.binder.user import users_by_role, hash_pw, new_user
-from web_backend.database.models import User, Role
+from web_backend.database.models import User
 
 
 @bp.route("/users", methods=["GET"])

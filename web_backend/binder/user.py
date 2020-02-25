@@ -18,14 +18,10 @@ def verify_password(data):
     role = Role.query.filter_by(id=user.role).first()
     if role is None:
         return None
-    response = {
-        "userId": user.id,
-        "role": role.name,
-        }
     if user:
         if bcrypt.checkpw(data["password"].encode("ascii"),
-                          user.password_hash.encode("ascii")):
-            return response
+                          user.password.encode("ascii")):
+            return {"userId": user.id, "role": role.name}
     return None
 
 
@@ -57,7 +53,7 @@ def new_user(data):
         if field in data:
             result[field] = data[field]
         if field == "password":
-            result["password_hash"] = hash_pw(data["password"])
+            result[field] = hash_pw(data["password"])
         if field == "role":
             result[field] = role.id
     print(result)

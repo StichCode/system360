@@ -7,7 +7,7 @@ class User(db.Model):
     username = db.Column(db.String(64), unique=True, nullable=False)  # FIXME handle username uniqueness error
     email = db.Column(db.String(64), unique=True, nullable=False)  # FIXME handle email uniqueness error
     phone = db.Column(db.String(12), nullable=True, server_default='')  # FIXME handle phone uniqueness error
-    password_hash = db.Column(db.String(255), nullable=False)  # FIXME do unicode value
+    password = db.Column(db.String(255), nullable=False)  # FIXME do unicode value
 
     first_name = db.Column(db.String(100), nullable=True, server_default='')
     last_name = db.Column(db.String(100), nullable=True, server_default='')

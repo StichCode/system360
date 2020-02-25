@@ -3,7 +3,6 @@ from flask_jwt_extended import get_jwt_identity, create_access_token, jwt_refres
 
 from web_backend import jwt
 from web_backend.api import bp
-from web_backend.database.models import User
 
 
 @bp.route("/refresh", methods=["POST"])
