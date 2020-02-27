@@ -56,31 +56,36 @@ class Franchise(db.Model):
     title = db.Column(db.String(256), nullable=False)
 
 
-# class Checkouts(db.Model):
-#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-#     shop_id = db.Column(db.Integer, db.ForeignKey('shops.id'), nullable=False)
-#     start = db.Column(db.DateTime, comment="время начала задачи")
-#     stop = db.Column(db.DateTime, comment="время конца задачи")
-#     worker = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False, comment="пользователь с ролью работник")
-#     type = db.Column(Enum())
-#     # type Enum (regular, внеочередные)
-#     # shop_id
-#
-#     shop_id = db.Column
-#
-#
-# class CheckoutTask(db.Model):
-#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-#     object_id = db.Column()
-#     # map_object_id
-#     # checkout id
-#     # status
-#     # title
-#
-#     pass
-#
-#
-# class CheckoutSubTask(db.Model):
-#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-#     checkout_task_id = db.Column(db.Integer, db.ForeignKey())
-#     title = db.Column(db.String(256), comment="название подзадачи")
+class TypeCheckout(Enum):
+    """
+    regular - регулярные проверки
+    extraordinary - внеочередные проверки
+    """
+    regular = "regular"
+    extraordinary = "extraordinary"
+
+
+class Checkouts(db.Model):
+    __tablename__ = 'checkouts'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    shop_id = db.Column(db.Integer, db.ForeignKey('shops.id'), nullable=False)
+    start = db.Column(db.DateTime, nullable=False, comment="время начала задачи")
+    stop = db.Column(db.DateTime, nullable=False, comment="время конца задачи")
+    worker = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False, comment="пользователь с ролью работник")
+    type = db.Column(db.Enum(TypeCheckout), nullable=False, comment="Тип проверки")
+
+
+class CheckoutTask(db.Model):
+    __tablename__ = 'tasks'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    object_id = db.Column(db.Integer, db.ForeignKey('objects.id'), nullable=False)
+    checkout = db.Column(db.Integer, db.ForeignKey('checkouts.id'), nullable=False)
+    status = db.Column(db.Boolean, nullable=False, comment="статус задачи")
+    title = db.Column(db.String(100), nullable=False, comment="название задачи")
+
+
+class CheckoutSubTask(db.Model):
+    __tablename__ = 'sub_tasks'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    task = db.Column(db.Integer, db.ForeignKey('tasks.id'), nullable=False)
+    title = db.Column(db.String(256), nullable=False, comment="название подзадачи")

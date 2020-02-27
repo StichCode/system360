@@ -8,7 +8,7 @@ def franchises_get():
     for f in fr:
         prepared_franchise.append({
             "id": f.id,
-            "franchise": f.title
+            "title": f.title
         })
     return prepared_franchise
 
