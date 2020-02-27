@@ -6,7 +6,7 @@ from web_backend.binder.shops import new_shop, shops_get
 
 
 @bp.route("/shops", methods=["GET"])
-# @jwt_required
+@jwt_required
 def all_shops():
     shops = shops_get()
     if shops:

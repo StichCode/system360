@@ -28,10 +28,10 @@
     DELETE /admin/users?id=?
     PUT    /admin/users
     
-    GET    /admin/object
-    POST   /admin/object
-    DELETE /admin/object?id=?
-    PUT    /admin/object
+    GET    /admin/objects
+    POST   /admin/objects
+    DELETE /admin/objects?id=?
+    PUT    /admin/objects
     
     GET    /admin/shops
     POST   /admin/shops

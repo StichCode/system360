@@ -23,7 +23,7 @@ test:
     - rsync -a --info=progress2 --delete . $ENV_DIR/current/
     - rm -rf $ENV_DIR/venv
     - python3.8 -m venv $ENV_DIR/venv
-    - source $ENV_DIR/venv/bin/activate && pip install -r $ENV_DIR/current/requirements.txt && flask db migrate && flask upgrade
+    - source $ENV_DIR/venv/bin/activate && pip install -r $ENV_DIR/current/requirements.txt && flask db migrate && flask db upgrade
   tags:
     - sys-ya
   when: manual
