@@ -38,7 +38,8 @@
     DELETE /admin/shops
     PUT    /admin/shops
     
-    GET   /admin/checkouts    
+    GET   /admin/checkouts
+    POST  /admin/checkouts    
     
 ##### ENV for project
      FLASK_CONFIG            config.BaseConfig

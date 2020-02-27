@@ -31,7 +31,7 @@ def new_checkout():
     response = checkouts_post(data)
     if isinstance(response, str):
         return jsonify(message=response), 403
-    return jsonify(), 201
+    return jsonify(message="checkout has been created"), 201
 
 
 @bp.route("/checkouts", methods=["DELETE"])
