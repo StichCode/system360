@@ -59,7 +59,7 @@ def checkouts_post(data):
     for field in ["shop_id", "start", "end", "worker", "type"]:
         if field in data:
             if field == "start" or "end":
-                result[field] = datetime.strftime(data[field], "%d/%m/%y %H:%M:S")
+                result[field] = datetime.strftime(data[field], "%d-%m-%Y %H:%M:S")
                 continue
             result[field] = data[field]
     obj = Checkouts(**result)
