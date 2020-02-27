@@ -52,3 +52,7 @@ def shops_get():
             }
         })
     return result
+
+
+def shop_delete(id_shop):
+    Shops.query.filter(Shops.id == id_shop).delete(synchronize_session=False)
