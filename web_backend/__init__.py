@@ -20,8 +20,9 @@ def create_app():
     migrate.init_app(app, db)
     jwt.init_app(app)
     if app.config.get("CORS"):
-        cors.init_app(app, resources={r"/api/*": {"origins": "*"},
-                                      r"/admin/*": {"origins": "*"}})
+        cors.init_app(app, resources={r"/admin/*": {"origins": "*"},
+                                      r"/api/*": {"origins": "*"},
+                                      r"/*": {"origins": "*"}})
 
     from web_backend.admin import bp as admin_bp
     app.register_blueprint(admin_bp, url_prefix="/admin")
