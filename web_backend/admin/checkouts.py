@@ -28,7 +28,10 @@ def new_checkout():
             or "worker" not in data\
             or "type" not in data:
         return jsonify(message="Bad parameters"), 401
-    return jsonify(checkouts_post(data)), 201
+    response = checkouts_post(data)
+    if isinstance(response, str):
+        return jsonify(message=response), 403
+    return jsonify(), 201
 
 
 @bp.route("/checkouts", methods=["DELETE"])

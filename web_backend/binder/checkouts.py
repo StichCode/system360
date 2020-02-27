@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from web_backend import db
 from web_backend.database.models import Checkouts, Shops, User
@@ -59,12 +59,16 @@ def checkouts_post(data):
     for field in ["shop_id", "start", "end", "worker", "type"]:
         if field in data:
             if field == "start" or "end":
-                result[field] = datetime.strftime(data[field], "%d-%m-%Y %H:%M:S")
+                result[field] = datetime.strftime(data[field], "%d-%m-%Y %H:%M:S")\
+                    .replace(tzinfo=timezone.utc).timestamp()
                 continue
             result[field] = data[field]
     obj = Checkouts(**result)
     db.session.add(obj)
-    db.session.commit()
+    try:
+        db.session.commit()
+    except TypeError:
+        return "Type error in inserting data"
     return obj.id
 
 
