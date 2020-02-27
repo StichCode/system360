@@ -1,3 +1,5 @@
+from enum import Enum
+
 from web_backend import db
 
 
@@ -55,10 +57,12 @@ class Franchise(db.Model):
 
 
 # class Checkouts(db.Model):
-#     shop_id = db.Column
-#     # datatiame_start
-#     # datatime_stop
-#     # user_ with role WORKER
+#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+#     shop_id = db.Column(db.Integer, db.ForeignKey('shops.id'), nullable=False)
+#     start = db.Column(db.DateTime, comment="время начала задачи")
+#     stop = db.Column(db.DateTime, comment="время конца задачи")
+#     worker = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False, comment="пользователь с ролью работник")
+#     type = db.Column(Enum())
 #     # type Enum (regular, внеочередные)
 #     # shop_id
 #
@@ -66,7 +70,8 @@ class Franchise(db.Model):
 #
 #
 # class CheckoutTask(db.Model):
-#     # checkout_task_id
+#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+#     object_id = db.Column()
 #     # map_object_id
 #     # checkout id
 #     # status
@@ -76,8 +81,6 @@ class Franchise(db.Model):
 #
 #
 # class CheckoutSubTask(db.Model):
-#     # id
-#     # checkout_task_id
-#     checkout_task_id = db.Column()
-#     title = db.Column()
-#     pass
+#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+#     checkout_task_id = db.Column(db.Integer, db.ForeignKey())
+#     title = db.Column(db.String(256), comment="название подзадачи")
