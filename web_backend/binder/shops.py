@@ -56,3 +56,4 @@ def shops_get():
 
 def shop_delete(id_shop):
     Shops.query.filter(Shops.id == id_shop).delete(synchronize_session=False)
+    db.session.commit()

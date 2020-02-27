@@ -2,6 +2,7 @@ import random
 
 import bcrypt
 
+from web_backend import db
 from web_backend.database.models import User, Role, Franchise
 
 
@@ -76,3 +77,8 @@ def user_get():
             }
         })
     return result
+
+
+def user_delete(user_id):
+    User.query.filter(User.id == user_id).delete(synchronize_session=False)
+    db.session.commit()

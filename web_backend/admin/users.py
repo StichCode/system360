@@ -4,7 +4,7 @@ from werkzeug.exceptions import BadRequestKeyError
 
 from web_backend import db
 from web_backend.admin import bp
-from web_backend.binder.users import user_post, user_get
+from web_backend.binder.users import user_post, user_get, user_delete
 from web_backend.database.models import User
 
 
@@ -37,8 +37,10 @@ def registration():
 
 @bp.route("/users", methods=["DELETE"])
 @jwt_required
-def user_delete():
+def delete_user():
     try:
         user_id = int(request.args["id"])
     except BadRequestKeyError:
         return jsonify(message="Bad parameters"), 401
+    user_delete(user_id)
+    return jsonify(message=f"User {user_id} has been deleted"), 201

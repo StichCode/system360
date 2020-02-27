@@ -12,7 +12,7 @@ def franchise():
     franchises = franchises_get()
     if franchises:
         return jsonify(franchises), 201
-    return jsonify(status=400, message="No franchises in database.")
+    return jsonify(message="No franchises in database."), 400
 
 
 @bp.route("/franchises", methods=["POST"])

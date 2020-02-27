@@ -35,4 +35,4 @@ def delete_shop():
     except BadRequestKeyError:
         return jsonify(message="Bad parameters"), 401
     shop_delete(shop_id)
-    return jsonify(message=f"Object {shop_id} has been deleted"), 201
+    return jsonify(message=f"Shop {shop_id} has been deleted"), 201
