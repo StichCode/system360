@@ -38,8 +38,9 @@
     DELETE /admin/shops
     PUT    /admin/shops
     
-    GET   /admin/checkouts
-    POST  /admin/checkouts    
+    GET    /admin/checkouts
+    POST   /admin/checkouts   
+    DELETE /admin/checkouts?id=? 
     
 ##### ENV for project
      FLASK_CONFIG            config.BaseConfig
