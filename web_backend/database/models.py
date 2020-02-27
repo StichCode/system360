@@ -70,7 +70,7 @@ class Checkouts(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     shop_id = db.Column(db.Integer, db.ForeignKey('shops.id'), nullable=False)
     start = db.Column(db.DateTime, nullable=False, comment="время начала задачи")
-    stop = db.Column(db.DateTime, nullable=False, comment="время конца задачи")
+    end = db.Column(db.DateTime, nullable=False, comment="время конца задачи")
     worker = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False, comment="пользователь с ролью работник")
     type = db.Column(db.Enum(TypeCheckout), nullable=False, comment="Тип проверки")
 

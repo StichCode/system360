@@ -42,7 +42,7 @@ def object_get():
                     "email": user.email,
                     "phone": user.phone,
                     "firstName": user.first_name,
-                    "last_name": user.last_name,
+                    "lastName": user.last_name,
                     "role": user.role,
                     "franchise": {
                         "franchiseId": franchise.id,
