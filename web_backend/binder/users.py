@@ -3,6 +3,7 @@ import bcrypt
 from web_backend import db
 from web_backend.binder.franchises import franchise_by_id
 from web_backend.binder.roles import role_by_id
+from web_backend.binder.shops import shop_by_user_id
 from web_backend.database.models import User, Role
 
 
@@ -85,13 +86,17 @@ def user_delete(user_id):
 
 def user_by_id(user_id):
     user = User.query.filter(User.id == user_id).first()
-    return {
+    role = role_by_id(user.role)
+    result = {
             "userId": user.id,
             "username": user.username,
             "email": user.email,
             "phone": user.phone,
             "firstName": user.first_name,
             "lastName": user.last_name,
-            "role": role_by_id(user.role),
+            "role": role,
             "franchise": franchise_by_id(user.franchise_id)
         }
+    if role["name"] == "worker":
+        result["shop"] = shop_by_user_id(user.id)
+    return result

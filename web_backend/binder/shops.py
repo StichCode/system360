@@ -54,3 +54,13 @@ def shop_by_id(shop_id):
         "phone": shop.phone,
         "user": user_by_id(shop.user_id)
     }
+
+
+def shop_by_user_id(user_id):
+    shop = Shops.query.filter(Shops.user_id == user_id).first()
+    return {
+        "shopId": shop.id,
+        "address": shop.address,
+        "phone": shop.phone,
+        "user": user_by_id(shop.user_id)
+    }
