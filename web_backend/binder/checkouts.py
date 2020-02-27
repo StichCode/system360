@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from web_backend import db
 from web_backend.database.models import Checkouts, Shops, User
 
@@ -56,6 +58,9 @@ def checkouts_post(data):
     # FIXME сделать проверку на существование шопа и рабочего
     for field in ["shop_id", "start", "end", "worker", "type"]:
         if field in data:
+            if field == "start" or "end":
+                result[field] = datetime.strftime(data[field], "%d/%m/%y %H:%M:S")
+                continue
             result[field] = data[field]
     obj = Checkouts(**result)
     db.session.add(obj)
