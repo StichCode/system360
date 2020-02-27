@@ -59,7 +59,7 @@ def checkouts_post(data):
     for field in ["shop_id", "start", "end", "worker", "type"]:
         if field in data:
             if field == "start" or field == "end":
-                result[field] = datetime.strptime(str(data[field]), "%d-%m-%Y %H:%M:S")\
+                result[field] = datetime.strptime(data[field], "%d-%m-%Y %H:%M:%S")\
                     .replace(tzinfo=timezone.utc).timestamp()
                 continue
             result[field] = data[field]
