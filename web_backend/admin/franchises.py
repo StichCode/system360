@@ -3,7 +3,7 @@ from flask_jwt_extended import jwt_required
 from werkzeug.exceptions import BadRequestKeyError
 
 from web_backend.admin import bp
-from web_backend.binder.franchises import franchises_get, franchises_post, franchises_delete
+from web_backend.binder.franchises import franchises_get, franchises_post, my_franchises_delete
 
 
 @bp.route("/franchises", methods=["GET"])
@@ -31,5 +31,5 @@ def delete_franchise():
         franchise_id = int(request.args["id"])
     except BadRequestKeyError:
         return jsonify(message="Bad parameters"), 401
-    franchises_delete(franchise_id)
+    my_franchises_delete(franchise_id)
     return jsonify(message="Franchise hs been delete"), 201

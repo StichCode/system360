@@ -1,5 +1,6 @@
 from web_backend import db
-from web_backend.database.models import Shops, User, Franchise
+from web_backend.binder.users import user_by_id
+from web_backend.database.models import Shops
 
 
 def get_shops_by_user(user_id):
@@ -31,25 +32,11 @@ def new_shop(data):
 def shops_get():
     result = []
     for shop in Shops.query.all():
-        user = User.query.filter(User.id == shop.user_id).first()
-        franchise = Franchise.query.filter(Franchise.id == user.franchise_id).first()
         result.append({
             "shopId": shop.id,
             "address": shop.address,
             "phone": shop.phone,
-            "user": {
-                "userId": user.id,
-                "username": user.username,
-                "email": user.email,
-                "phone": user.phone,
-                "firstName": user.first_name,
-                "lastName": user.last_name,
-                "role": user.role,
-                "franchise": {
-                    "franchiseId": franchise.id,
-                    "franchiseName": franchise.title
-                }
-            }
+            "user": user_by_id(shop.user_id)
         })
     return result
 
@@ -57,3 +44,13 @@ def shops_get():
 def shop_delete(id_shop):
     Shops.query.filter(Shops.id == id_shop).delete(synchronize_session=False)
     db.session.commit()
+
+
+def shop_by_id(shop_id):
+    shop = Shops.query.filter(Shops.id == shop_id).first()
+    return {
+        "shopId": shop.id,
+        "address": shop.address,
+        "phone": shop.phone,
+        "user": user_by_id(shop.user_id)
+    }

@@ -42,6 +42,10 @@
     POST   /admin/checkouts   
     DELETE /admin/checkouts?id=? 
     
+    GET    /admin/tasks
+    POST   /admin/tasks
+    DELETE /admin/tasks?id=?
+    
 ##### ENV for project
      FLASK_CONFIG            config.BaseConfig
      DATABASE_URL            postgresql+psycopg2://user:pass@url:port/database

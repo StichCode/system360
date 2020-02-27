@@ -1,52 +1,20 @@
-from datetime import datetime, timezone
+from datetime import datetime
 
 from web_backend import db
-from web_backend.database.models import Checkouts, Shops, User
+from web_backend.binder.shops import shop_by_id
+from web_backend.binder.users import user_by_id
+from web_backend.database.models import Checkouts
 
 
 def checkouts_get_all():
     result = []
     for checkout in Checkouts.query.all():
-        checkout: Checkouts
-        shop = Shops.query.filter(Shops.id == checkout.shop_id).first()
-        user = User.query.filter(User.id == shop.user_id).first()
-        franchise = User
-        worker = User.query.filter(User.id == checkout.worker).first()
         result.append({
             "id": checkout.id,
-            "shop": {
-                "shopId": shop.id,
-                "address": shop.address,
-                "phone": shop.phone,
-                "user": {
-                    "userId": user.id,
-                    "username": user.username,
-                    "email": user.email,
-                    "phone": user.phone,
-                    "firstName": user.first_name,
-                    "lastName": user.last_name,
-                    "role": user.role,
-                    "franchise": {
-                        "franchiseId": franchise.id,
-                        "franchiseName": franchise.title
-                    }
-                },
-            },
+            "shop": shop_by_id(checkout.shop_id),
             "start": checkout.start,
             "end": checkout.end,
-            "user": {
-                    "userId": worker.id,
-                    "username": worker.username,
-                    "email": worker.email,
-                    "phone": worker.phone,
-                    "firstName": worker.first_name,
-                    "lastName": worker.last_name,
-                    "role": worker.role,
-                    "franchise": {
-                        "franchiseId": franchise.id,
-                        "franchiseName": franchise.title
-                    }
-                },
+            "user": user_by_id(checkout.worker),
             "type": checkout.type
 
         })
@@ -71,3 +39,15 @@ def checkouts_post(data):
 def checkouts_delete(id_checkout):
     Checkouts.query.filter(Checkouts.id == id_checkout).delete(synchronize_session=False)
     db.session.commit()
+
+
+def checkout_by_id(checkout_id):
+    checkout = Checkouts.query.filter(Checkouts.id == checkout_id).firast()
+    return {
+        "id": checkout.id,
+        "shop": shop_by_id(checkout.shop_id),
+        "start": checkout.start,
+        "end": checkout.end,
+        "user": user_by_id(checkout.worker),
+        "type": checkout.type
+    }
