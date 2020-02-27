@@ -20,18 +20,5 @@ def my_expired_token_callback(expired_token):
     token_type = expired_token['type']
     return jsonify({
         'status': 405,
-        'sub_status': 42,
         'msg': 'The {} token has expired'.format(token_type)
     }), 405
-
-
-# @jwt.user_claims_loader
-# def add_claims_to_access_token(user):
-#     user = User.query.filter_by(username=user).first()
-#     return {'user_id': user.id, 'role': user.role}
-
-
-# @jwt.user_identity_loader
-# def user_identity_lookup(user):
-#     return user.username
-

@@ -2,7 +2,7 @@ import random
 
 import bcrypt
 
-from web_backend.database.models import User, Role
+from web_backend.database.models import User, Role, Franchise
 
 
 def hash_pw(password: str):
@@ -45,9 +45,8 @@ def users_by_role(role):
     return all_users
 
 
-def new_user(data):
+def user_post(data):
     role = Role.query.filter_by(name=data["role"]).first()
-
     result = {}
     for field in ["username", "email", "phone", "password", "first_name", "last_name", "role", "franchise_id"]:
         if field in data:
@@ -55,6 +54,25 @@ def new_user(data):
         if field == "password":
             result[field] = hash_pw(data["password"])
         if field == "role":
-            result[field] = role.id
-    print(result)
+            result[field] = int(role.id)
     return User(**result)
+
+
+def user_get():
+    result = []
+    for user in User.query.all():
+        franchise = Franchise.query.filter(Franchise.id == user.franchise_id).first()
+        result.append({
+            "userId": user.id,
+            "username": user.username,
+            "email": user.email,
+            "phone": user.phone,
+            "firstName": user.first_name,
+            "last_name": user.last_name,
+            "role": user.role,
+            "franchise": {
+                "franchiseId": franchise.id,
+                "franchiseName": franchise.title
+            }
+        })
+    return result

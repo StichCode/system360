@@ -8,11 +8,35 @@
     
 ##### Urls of project:
     POST /api/auth
-    POST /api/reg
-    GET /api/users?role=Manager
     POST /api/refresh
+    
+    GET /api/users?role=Manager
+    
     GET /api/shops?userId=1
+    
     GET /api/map?shopId=1
+    
+    
+##### Urls for Admin:
+    GET    /admin/franchises
+    POST   /admin/franchises
+    DELETE /admin/franchises?id=?
+    PUT    /admin/franchises
+    
+    GET    /admin/users
+    POST   /admin/users
+    DELETE /admin/users?id=?
+    PUT    /admin/users
+    
+    GET    /admin/object
+    POST   /admin/object
+    DELETE /admin/object?id=?
+    PUT    /admin/object
+    
+    GET    /admin/shops
+    POST   /admin/shops
+    DELETE /admin/shops
+    PUT    /admin/shops
     
     
 ##### ENV for project
