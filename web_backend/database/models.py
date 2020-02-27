@@ -52,3 +52,15 @@ class Franchise(db.Model):
     __tablename__ = 'franchises'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(256), nullable=False)
+
+
+class Checkout(db.Model):
+    pass
+
+
+class CheckoutTask(db.Model):
+    pass
+
+
+class CheckoutSubTask(db.Model):
+    pass
