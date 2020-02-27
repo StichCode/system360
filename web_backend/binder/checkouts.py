@@ -58,20 +58,14 @@ def checkouts_post(data):
     # FIXME сделать проверку на существование шопа и рабочего
     for field in ["shop_id", "start", "end", "worker", "type"]:
         if field in data:
-            if field == "start" or "end":
-                try:
-                    result[field] = datetime.strptime(str(data[field]), "%d-%m-%Y %H:%M:S")\
-                        .replace(tzinfo=timezone.utc).timestamp()
-                except ValueError or TypeError:
-                    return f"{data[field]}, {type(data[field])}"
+            if field == "start" or field == "end":
+                result[field] = datetime.strptime(str(data[field]), "%d-%m-%Y %H:%M:S")\
+                    .replace(tzinfo=timezone.utc).timestamp()
                 continue
             result[field] = data[field]
     obj = Checkouts(**result)
     db.session.add(obj)
-    try:
-        db.session.commit()
-    except TypeError:
-        return "Type error in inserting data"
+    db.session.commit()
     return obj.id
 
 
