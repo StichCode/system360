@@ -54,13 +54,30 @@ class Franchise(db.Model):
     title = db.Column(db.String(256), nullable=False)
 
 
-class Checkout(db.Model):
-    pass
-
-
-class CheckoutTask(db.Model):
-    pass
-
-
-class CheckoutSubTask(db.Model):
-    pass
+# class Checkouts(db.Model):
+#     shop_id = db.Column
+#     # datatiame_start
+#     # datatime_stop
+#     # user_ with role WORKER
+#     # type Enum (regular, внеочередные)
+#     # shop_id
+#
+#     shop_id = db.Column
+#
+#
+# class CheckoutTask(db.Model):
+#     # checkout_task_id
+#     # map_object_id
+#     # checkout id
+#     # status
+#     # title
+#
+#     pass
+#
+#
+# class CheckoutSubTask(db.Model):
+#     # id
+#     # checkout_task_id
+#     checkout_task_id = db.Column()
+#     title = db.Column()
+#     pass
