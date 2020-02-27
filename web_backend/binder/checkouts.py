@@ -59,8 +59,11 @@ def checkouts_post(data):
     for field in ["shop_id", "start", "end", "worker", "type"]:
         if field in data:
             if field == "start" or "end":
-                result[field] = datetime.strptime(str(data[field]), "%d-%m-%Y %H:%M:S")\
-                    .replace(tzinfo=timezone.utc).timestamp()
+                try:
+                    result[field] = datetime.strptime(str(data[field]), "%d-%m-%Y %H:%M:S")\
+                        .replace(tzinfo=timezone.utc).timestamp()
+                except ValueError or TypeError:
+                    return f"{data[field]}, {type(data[field])}"
                 continue
             result[field] = data[field]
     obj = Checkouts(**result)
