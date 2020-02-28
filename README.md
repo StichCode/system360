@@ -46,6 +46,10 @@
     POST   /admin/tasks
     DELETE /admin/tasks?id=?
     
+    GET    /admin/subtasks
+    POST   /admin/subtasks
+    DELETE /admin/subtasks?id=?
+    
     
     
 ##### Fields for create anything
@@ -60,7 +64,7 @@
     
     CHECKOUTS    ["shop_id", "start", "end", "worker", "type"] (int, str(31-12-2019 23:49), str, int, str(ENUM))
     TASKS        ["object_id", "checkout", "status", "title"] (int, int, bool, str)
-    SUBTASKS     []
+    SUBTASKS     ["task", "title"] (int, str)
     
 ##### ENV for project
      FLASK_CONFIG            config.BaseConfig
