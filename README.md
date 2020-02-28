@@ -46,6 +46,22 @@
     POST   /admin/tasks
     DELETE /admin/tasks?id=?
     
+    
+    
+##### Fields for create anything
+
+    ROLE       ["name"] (str)
+    FRANCHISE  ["title"] (str)
+    USER       ["username", "email", "phone", "password", "first_name", "last_name", "role", "franchise_id"]
+               (str, str, str,str,str,str, int, int)
+    
+    SHOP        ["address", "phone", "user_id"] (str,str,int)
+    OBJECT      ["title", "type", "x", "y", "shop_id"] (str,str,int,int,int)
+    
+    CHECKOUTS    ["shop_id", "start", "end", "worker", "type"] (int, str(31-12-2019 23:49), str, int, str(ENUM))
+    TASKS        ["object_id", "checkout", "status", "title"] (int, int, bool, str)
+    SUBTASKS     []
+    
 ##### ENV for project
      FLASK_CONFIG            config.BaseConfig
      DATABASE_URL            postgresql+psycopg2://user:pass@url:port/database

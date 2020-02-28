@@ -2,7 +2,7 @@ from datetime import datetime
 
 from web_backend import db
 from web_backend.binder.shops import shop_by_id
-from web_backend.binder.users import user_by_id
+from web_backend.binder.users import get_user_by_id
 from web_backend.database.models import Checkouts
 
 
@@ -14,7 +14,7 @@ def checkouts_get_all():
             "shop": shop_by_id(checkout.shop_id),
             "start": checkout.start,
             "end": checkout.end,
-            "user": user_by_id(checkout.worker),
+            "user": get_user_by_id(checkout.worker),
             "type": checkout.type
 
         })
@@ -48,6 +48,6 @@ def checkout_by_id(checkout_id):
         "shop": shop_by_id(checkout.shop_id),
         "start": checkout.start,
         "end": checkout.end,
-        "user": user_by_id(checkout.worker),
+        "user": get_user_by_id(checkout.worker),
         "type": checkout.type
     }

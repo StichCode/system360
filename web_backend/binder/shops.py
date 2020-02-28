@@ -1,5 +1,5 @@
 from web_backend import db
-from web_backend.binder.users import user_by_id
+from web_backend.binder.users import get_user_by_id
 from web_backend.database.models import Shops
 
 
@@ -36,7 +36,7 @@ def shops_get():
             "shopId": shop.id,
             "address": shop.address,
             "phone": shop.phone,
-            "user": user_by_id(shop.user_id)
+            "user": get_user_by_id(shop.user_id)
         })
     return result
 
@@ -52,7 +52,7 @@ def shop_by_id(shop_id):
         "shopId": shop.id,
         "address": shop.address,
         "phone": shop.phone,
-        "user": user_by_id(shop.user_id)
+        "user": get_user_by_id(shop.user_id)
     }
 
 
@@ -62,5 +62,5 @@ def shop_by_user_id(user_id):
         "shopId": shop.id,
         "address": shop.address,
         "phone": shop.phone,
-        "user": user_by_id(shop.user_id)
+        "user": get_user_by_id(shop.user_id)
     }
