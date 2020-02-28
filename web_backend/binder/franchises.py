@@ -29,5 +29,5 @@ def franchise_by_id(franchise_id):
     franchise = Franchise.query.filter(Franchise.id == franchise_id).first()
     return {
         "id": franchise.id,
-        "title":franchise.title
+        "title": franchise.title
     }

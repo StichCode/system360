@@ -7,9 +7,10 @@ from web_backend.binder.checkouts import checkouts_post, checkouts_get_all, chec
 
 
 @bp.route("/checkouts", methods=["GET"])
-@jwt_required
+# @jwt_required
 def checkout():
     checkouts = checkouts_get_all()
+    print(checkouts)
     if checkouts:
         return jsonify(checkouts), 201
     return jsonify(message="No franchises in database."), 400

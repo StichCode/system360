@@ -12,11 +12,10 @@ def checkouts_get_all():
         result.append({
             "id": checkout.id,
             "shop": shop_by_id(checkout.shop_id),
-            "start": checkout.start,
-            "end": checkout.end,
+            "start": checkout.start.strftime("%d-%m-%Y %H:%M:%S"),
+            "end": checkout.end.strftime("%d-%m-%Y %H:%M:%S"),
             "user": get_user_by_id(checkout.worker),
-            "type": checkout.type
-
+            "type": checkout.type.value
         })
     return result
 
@@ -46,8 +45,8 @@ def checkout_by_id(checkout_id):
     return {
         "id": checkout.id,
         "shop": shop_by_id(checkout.shop_id),
-        "start": checkout.start,
-        "end": checkout.end,
+        "start": checkout.start.strftime("%d-%m-%Y %H:%M:%S"),
+        "end": checkout.end.strftime("%d-%m-%Y %H:%M:%S"),
         "user": get_user_by_id(checkout.worker),
-        "type": checkout.type
+        "type": checkout.type.value
     }
