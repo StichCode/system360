@@ -41,7 +41,7 @@ def checkouts_delete(id_checkout):
 
 
 def checkout_by_id(checkout_id):
-    checkout = Checkouts.query.filter(Checkouts.id == checkout_id).firast()
+    checkout = Checkouts.query.filter(Checkouts.id == checkout_id).first()
     return {
         "id": checkout.id,
         "shop": shop_by_id(checkout.shop_id),
