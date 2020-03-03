@@ -11,7 +11,7 @@ from web_backend.binder.shops import new_shop, shops_get, shop_delete
 def all_shops():
     shops = shops_get()
     if shops:
-        return jsonify(shops), 201
+        return jsonify(shops), 200
     return jsonify(status=400, message="No shops in database.")
 
 

@@ -11,7 +11,7 @@ from web_backend.binder.object import object_delete, object_post, object_get
 def get_all_objects():
     objects = object_get()
     if objects:
-        return jsonify(objects), 201
+        return jsonify(objects), 200
     return jsonify(status=400, message="No objects in database.")
 
 

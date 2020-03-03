@@ -11,7 +11,7 @@ from web_backend.binder.subtasks import subtasks_get_all, subtasks_post, subtask
 def subtasks():
     tasks_all = subtasks_get_all()
     if tasks_all:
-        return jsonify(tasks_all), 201
+        return jsonify(tasks_all), 200
     return jsonify(message="No tasks in database."), 400
 
 

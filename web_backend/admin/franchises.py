@@ -11,7 +11,7 @@ from web_backend.binder.franchises import franchises_get, franchises_post, my_fr
 def franchise():
     franchises = franchises_get()
     if franchises:
-        return jsonify(franchises), 201
+        return jsonify(franchises), 200
     return jsonify(message="No franchises in database."), 400
 
 
