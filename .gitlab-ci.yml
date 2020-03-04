@@ -41,6 +41,8 @@ dev-deploy:
     - source $LOCAL_DIR/venv/bin/activate && flask db migrate
     - source $LOCAL_DIR/venv/bin/activate && flask db upgrade
     - sudo systemctl start sys360.service
+  only:
+    - master
   tags:
     - sys-ya
 
