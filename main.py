@@ -1,6 +1,15 @@
-from web_backend import create_app
+import sys
 
-app = create_app()
+from web_backend import create_app
+from web_backend.test.tests import test_example
+
+if len(sys.argv) >= 2 and sys.argv[1] == "main":
+    app = create_app()
+elif len(sys.argv) >= 2 and sys.argv[1] == "unittest":
+    test_example()
+
+
+
 
 
 """

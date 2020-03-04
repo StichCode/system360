@@ -12,6 +12,8 @@ class BaseConfig(object):
 class TestingConfig(BaseConfig):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get("TEST_DATABASE_URL")
+    TESTING = True
+    CSRF_ENABLED = False
 
 
 class DevelopmentConfig(BaseConfig):

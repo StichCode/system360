@@ -28,6 +28,8 @@ def create_app():
     from web_backend.api import bp as api_bp
     app.register_blueprint(api_bp, url_prefix="/api")
 
+    db.create_all()
+
     return app
 
 
