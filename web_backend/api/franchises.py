@@ -2,7 +2,7 @@ from flask import jsonify, request
 from flask_jwt_extended import jwt_required
 from werkzeug.exceptions import BadRequestKeyError
 
-from web_backend.admin import bp
+from web_backend.api import bp
 from web_backend.binder.franchises import franchises_get, franchises_post, my_franchises_delete
 
 

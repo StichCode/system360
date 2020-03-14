@@ -2,7 +2,7 @@ from flask import jsonify, request
 from flask_jwt_extended import jwt_required
 from werkzeug.exceptions import BadRequestKeyError
 
-from web_backend.admin import bp
+from web_backend.api import bp
 from web_backend.binder.checkouts import checkouts_post, checkouts_get_all, checkouts_delete
 
 
