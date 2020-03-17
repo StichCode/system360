@@ -18,37 +18,37 @@
     
     
 ##### Urls for Admin:
-    GET    /admin/franchises
-    POST   /admin/franchises
-    DELETE /admin/franchises?id=?
-    PUT    /admin/franchises
+    GET    /api/franchises
+    POST   /api/franchises
+    DELETE /api/franchises?id=?
+    PUT    /api/franchises
     
-    GET    /admin/users
-    POST   /admin/users
-    DELETE /admin/users?id=?
-    PUT    /admin/users
+    GET    /api/users
+    POST   /api/users
+    DELETE /api/users?id=?
+    PUT    /api/users
     
-    GET    /admin/objects
-    POST   /admin/objects
-    DELETE /admin/objects?id=?
-    PUT    /admin/objects
+    GET    /api/objects
+    POST   /api/objects
+    DELETE /api/objects?id=?
+    PUT    /api/objects
     
-    GET    /admin/shops
-    POST   /admin/shops
-    DELETE /admin/shops
-    PUT    /admin/shops
+    GET    /api/shops
+    POST   /api/shops
+    DELETE /api/shops
+    PUT    /api/shops
     
-    GET    /admin/checkouts
-    POST   /admin/checkouts   
-    DELETE /admin/checkouts?id=? 
+    GET    /api/checkouts
+    POST   /api/checkouts   
+    DELETE /api/checkouts?id=? 
     
-    GET    /admin/tasks
-    POST   /admin/tasks
-    DELETE /admin/tasks?id=?
+    GET    /api/tasks
+    POST   /api/tasks
+    DELETE /api/tasks?id=?
     
-    GET    /admin/subtasks
-    POST   /admin/subtasks
-    DELETE /admin/subtasks?id=?
+    GET    /api/subtasks
+    POST   /api/subtasks
+    DELETE /api/subtasks?id=?
     
     
     

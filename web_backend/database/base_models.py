@@ -12,7 +12,9 @@ class BaseModel(object):
         return data
 
     @classmethod
-    def from_dict(cls, data):
+    def from_dict(cls, data=None):
+        if not data:
+            return 405
         result = {}
         print(cls)
         # keys = [column.key for _, column in cls.__mapper__.c.items()]
@@ -21,13 +23,12 @@ class BaseModel(object):
         #         result[field] = data[field]
         # return cls(**result)
 
-
     @staticmethod
     def snake_to_camel(s: str):
         if not re.findall("_", s):
             return s
         result = re.split("_", s)
-        return result[0]+result[1].capitalize()
+        return result[0] + result[1].capitalize()
 
     @staticmethod
     def camel_to_snake(s: str):
@@ -37,3 +38,38 @@ class BaseModel(object):
         camel = camel[0]
         result = re.split(camel, s)
         return result[0] + "_" + camel.lower() + result[1]
+
+
+class BaseUser(BaseModel):
+
+    @classmethod
+    def from_dict(cls, data=None):
+        pass
+
+
+class BaseShops(BaseModel):
+
+    @classmethod
+    def from_dict(cls, data=None):
+        pass
+
+
+class BaseObjects(BaseModel):
+
+    @classmethod
+    def from_dict(cls, data=None):
+        pass
+
+
+class BaseCheckouts(BaseModel):
+
+    @classmethod
+    def from_dict(cls, data=None):
+        pass
+
+
+class BaseCheckoutTask(BaseModel):
+
+    @classmethod
+    def from_dict(cls, data=None):
+        pass

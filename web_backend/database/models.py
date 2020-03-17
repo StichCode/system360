@@ -1,7 +1,7 @@
 from enum import Enum
 
 from web_backend import db
-from web_backend.database.base_model import BaseModel
+from web_backend.database.base_models import BaseModel
 
 
 class User(BaseModel, db.Model):
