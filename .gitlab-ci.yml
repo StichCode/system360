@@ -43,6 +43,8 @@ dev-deploy:
     - sudo systemctl start sys360.service
   tags:
     - sys-ya
+  only:
+    - master
 
 prod-deploy:
   stage: prod-deploy
@@ -52,3 +54,5 @@ prod-deploy:
   tags:
     - sys-ya
   when: manual
+  only:
+    - master
