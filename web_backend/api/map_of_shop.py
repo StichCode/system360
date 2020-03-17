@@ -3,8 +3,7 @@ from flask_jwt_extended import jwt_required
 from werkzeug.exceptions import BadRequestKeyError
 
 from web_backend.api import bp
-from web_backend.binder.object import get_map_of_shop, object_delete, object_post
-
+from web_backend.binder.object import get_map_of_shop
 
 @bp.route("/map", methods=["GET"])
 @jwt_required

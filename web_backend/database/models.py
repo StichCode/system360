@@ -1,9 +1,10 @@
 from enum import Enum
 
 from web_backend import db
+from web_backend.database.base_model import BaseModel
 
 
-class User(db.Model):
+class User(BaseModel, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(64), unique=True, nullable=False)  # FIXME handle username uniqueness error
@@ -19,7 +20,7 @@ class User(db.Model):
     franchise_id = db.Column(db.Integer, db.ForeignKey('franchises.id'))
 
 
-class Role(db.Model):
+class Role(BaseModel, db.Model):
     """
     owner
     manager
@@ -32,7 +33,7 @@ class Role(db.Model):
     name = db.Column(db.String(50), index=True, unique=True)
 
 
-class Shops(db.Model):
+class Shops(BaseModel, db.Model):
     __tablename__ = 'shops'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     address = db.Column(db.String(128), nullable=False)
@@ -40,7 +41,7 @@ class Shops(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
 
-class Objects(db.Model):
+class Objects(BaseModel, db.Model):
     __tablename__ = 'objects'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(64), nullable=False)
@@ -50,7 +51,7 @@ class Objects(db.Model):
     shop_id = db.Column(db.Integer, db.ForeignKey('shops.id'), nullable=False)
 
 
-class Franchise(db.Model):
+class Franchise(BaseModel, db.Model):
     __tablename__ = 'franchises'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(256), nullable=False)
@@ -65,7 +66,7 @@ class TypeCheckout(Enum):
     extraordinary = "extraordinary"
 
 
-class Checkouts(db.Model):
+class Checkouts(BaseModel, db.Model):
     __tablename__ = 'checkouts'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     shop_id = db.Column(db.Integer, db.ForeignKey('shops.id'), nullable=False)
@@ -75,7 +76,7 @@ class Checkouts(db.Model):
     type = db.Column(db.Enum(TypeCheckout), nullable=False, comment="Тип проверки")
 
 
-class CheckoutTask(db.Model):
+class CheckoutTask(BaseModel, db.Model):
     __tablename__ = 'tasks'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     object_id = db.Column(db.Integer, db.ForeignKey('objects.id'), nullable=False)
@@ -84,7 +85,7 @@ class CheckoutTask(db.Model):
     title = db.Column(db.String(100), nullable=False, comment="название задачи")
 
 
-class CheckoutSubTask(db.Model):
+class CheckoutSubTask(BaseModel, db.Model):
     __tablename__ = 'sub_tasks'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     task = db.Column(db.Integer, db.ForeignKey('tasks.id'), nullable=False)

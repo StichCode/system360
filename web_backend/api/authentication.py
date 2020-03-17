@@ -5,11 +5,6 @@ from web_backend.api import bp
 from web_backend.binder.users import verify_password
 
 
-@bp.route("/test", methods=["GET"])
-def test():
-    return f"<h1>Hello Пидор! </h1>"
-
-
 @bp.route("/auth", methods=["POST"])
 def login():
     data = request.get_json() or {}

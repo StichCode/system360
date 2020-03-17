@@ -34,7 +34,4 @@ insert into objects (title, type, x, y, shop_id) values ('Table', 'table', 100, 
 insert into objects (title, type, x, y, shop_id) values ('Table', 'table', 100, 100, 3);
 insert into objects (title, type, x, y, shop_id) values ('Table', 'table', 100, 100, 3);
 insert into objects (title, type, x, y, shop_id) values ('Table', 'table', 100, 100, 3);
-
-
-
 """

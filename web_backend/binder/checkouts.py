@@ -27,8 +27,8 @@ def checkouts_post(data):
         if field in data:
             if field == "start" or field == "end":
                 result[field] = datetime.strptime(data[field], "%d-%m-%Y %H:%M:%S")
-                continue
-            result[field] = data[field]
+            else:
+                result[field] = data[field]
     obj = Checkouts(**result)
     db.session.add(obj)
     db.session.commit()

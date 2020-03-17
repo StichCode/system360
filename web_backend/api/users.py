@@ -8,6 +8,13 @@ from web_backend.binder.users import users_by_role, user_delete, user_post, user
 from web_backend.database.models import User
 
 
+@bp.route('/test', methods=["POST"])
+def test():
+    # print([u.to_dict() for u in Shops.query.all()])
+
+    return jsonify("Hello world"), 200
+
+
 @bp.route("/users", methods=["GET"])
 @jwt_required
 def get_users_by_role():
