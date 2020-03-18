@@ -1,10 +1,10 @@
 from enum import Enum
 
 from web_backend import db
-from web_backend.database.base_models import BaseModel
+from web_backend.database.base_models import BaseModel, BaseUser
 
 
-class User(BaseModel, db.Model):
+class User(BaseUser, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(64), unique=True, nullable=False)  # FIXME handle username uniqueness error

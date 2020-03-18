@@ -8,11 +8,9 @@ from web_backend.binder.users import users_by_role, user_delete, user_post, user
 from web_backend.database.models import Role, User
 
 
-@bp.route('/test', methods=["POST"])
+@bp.route('/test', methods=["GET"])
 def test():
-    result = Role.from_dict(request.get_json())
-    if result is None:
-        return jsonify("Hello world"), 200
+    return jsonify("Hello world"), 200
 
 
 @bp.route("/users", methods=["GET"])

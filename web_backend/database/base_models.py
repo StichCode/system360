@@ -1,8 +1,10 @@
 import re
 
+import bcrypt
 from sqlalchemy.exc import IntegrityError
 
 from web_backend.database.base_func import add_instance
+from web_backend.database.models import Role
 
 
 class BaseModel(object):
@@ -58,34 +60,26 @@ class BaseModel(object):
 
 class BaseUser(BaseModel):
 
-    @classmethod
-    def from_dict(cls, data=None):
-        pass
-
-
-class BaseShops(BaseModel):
-
-    @classmethod
-    def from_dict(cls, data=None):
-        pass
-
-
-class BaseObjects(BaseModel):
+    @staticmethod
+    def hash_pw(password: str):
+        salt = bcrypt.gensalt(12)
+        hashed = bcrypt.hashpw(password.encode("ascii"), salt)
+        return hashed.decode("UTF-8")
 
     @classmethod
-    def from_dict(cls, data=None):
-        pass
-
-
-class BaseCheckouts(BaseModel):
-
-    @classmethod
-    def from_dict(cls, data=None):
-        pass
-
-
-class BaseCheckoutTask(BaseModel):
-
-    @classmethod
-    def from_dict(cls, data=None):
-        pass
+    def from_dict(cls, data: dict):
+        result = {}
+        data = cls.prepare_dict(data)
+        keys = [column.key for _, column in cls.__mapper__.c.items()]
+        for field in keys:
+            if field in data:
+                if field == "password":
+                    result[field] = cls.hash_pw(data[field])
+                elif field == "role":
+                    result[field] = int((Role.query.filter_by(name=data["role"]).first()).id)
+                else:
+                    result[field] = data[field]
+        try:
+            add_instance(cls, **result)
+        except IntegrityError:
+            pass
