@@ -1,5 +1,9 @@
 import re
 
+from sqlalchemy.exc import IntegrityError
+
+from web_backend.database.base_func import add_instance
+
 
 class BaseModel(object):
 
@@ -12,16 +16,28 @@ class BaseModel(object):
         return data
 
     @classmethod
-    def from_dict(cls, data=None):
-        if not data:
-            return 405
+    def from_dict(cls, data: dict):
         result = {}
-        print(cls)
-        # keys = [column.key for _, column in cls.__mapper__.c.items()]
-        # for field in keys:
-        #     if field in data:
-        #         result[field] = data[field]
-        # return cls(**result)
+        data = cls.prepare_dict(data)
+        keys = [column.key for _, column in cls.__mapper__.c.items()]
+        for field in keys:
+            if field in data:
+                result[field] = data[field]
+        try:
+            add_instance(cls, **result)
+        except IntegrityError:
+            pass
+
+    @classmethod
+    def keys(cls):
+        return [cls.snake_to_camel(column.key) for _, column in cls.__mapper__.c.items()]
+
+    @classmethod
+    def prepare_dict(cls, data: dict) -> dict:
+        new_dict = {}
+        for k, v in data.items():
+            new_dict[cls.camel_to_snake(k)] = v
+        return new_dict
 
     @staticmethod
     def snake_to_camel(s: str):

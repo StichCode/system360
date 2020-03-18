@@ -50,11 +50,10 @@ def user_post(data):
     role = Role.query.filter_by(name=data["role"]).first()
     result = {}
     for field in ["username", "email", "phone", "password", "first_name", "last_name", "role", "franchise_id"]:
-        if field in data:
-            result[field] = data[field]
-            continue
         if field == "password":
             result[field] = hash_pw(data["password"])
+        if field in data:
+            result[field] = data[field]
             continue
         if field == "role":
             result[field] = int(role.id)

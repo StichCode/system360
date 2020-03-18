@@ -5,14 +5,14 @@ from werkzeug.exceptions import BadRequestKeyError
 from web_backend import db
 from web_backend.api import bp
 from web_backend.binder.users import users_by_role, user_delete, user_post, user_get
-from web_backend.database.models import User
+from web_backend.database.models import Role, User
 
 
 @bp.route('/test', methods=["POST"])
 def test():
-    # print([u.to_dict() for u in Shops.query.all()])
-
-    return jsonify("Hello world"), 200
+    result = Role.from_dict(request.get_json())
+    if result is None:
+        return jsonify("Hello world"), 200
 
 
 @bp.route("/users", methods=["GET"])

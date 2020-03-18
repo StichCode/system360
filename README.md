@@ -17,7 +17,7 @@
     GET /api/map?shopId=1
     
     
-##### Urls for Admin:
+##### Urls for API:
     GET    /api/franchises
     POST   /api/franchises
     DELETE /api/franchises?id=?
@@ -51,20 +51,22 @@
     DELETE /api/subtasks?id=?
     
     
+    GET    /api/roles?test=true
+    
     
 ##### Fields for create anything
 
-    ROLE       ["name"] (str)
-    FRANCHISE  ["title"] (str)
-    USER       ["username", "email", "phone", "password", "first_name", "last_name", "role", "franchise_id"]
-               (str, str, str,str,str,str, int, int)
+    Keys to dict you can checked on:
     
-    SHOP        ["address", "phone", "user_id"] (str,str,int)
-    OBJECT      ["title", "type", "x", "y", "shop_id"] (str,str,int,int,int)
-    
-    CHECKOUTS    ["shop_id", "start", "end", "worker", "type"] (int, str(31-12-2019 23:49), str, int, str(ENUM))
-    TASKS        ["object_id", "checkout", "status", "title"] (int, int, bool, str)
-    SUBTASKS     ["task", "title"] (int, str)
+    GET:
+        ROLE                /keys/role
+        USER                /keys/user
+        SHOP                /keys/shop
+        OBJECT              /keys/object
+        FRANCHISE           /keys/franchise
+        CHECKOUT            /keys/checkout
+        CHECKOUT TASK       /keys/checkout_task
+        CHECOUT SUB TASK    /keys/checkout_sub_task
     
 ##### ENV for project
      FLASK_CONFIG            config.BaseConfig
