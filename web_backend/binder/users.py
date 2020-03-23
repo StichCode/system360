@@ -26,23 +26,13 @@ def verify_password(data):
 
 
 def users_by_role(role):
-    all_users = []
     role = Role.query.filter_by(name=role).first()
     if role is None:
-        return all_users
+        return None
     users = User.query.filter_by(role=role.id).all()
     if users is None:
-        return all_users
-    for user in users:
-        all_users.append({
-            "userId": user.id,
-            "userName": user.username,
-            # "role": role_by_id(user.role),
-            "firstName": user.first_name,
-            "lastName": user.last_name,
-            "userPhone": user.phone
-        })
-    return all_users
+        return None
+    return [user.to_dict() for user in users]
 
 
 def user_post(data):

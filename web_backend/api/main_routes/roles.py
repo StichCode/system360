@@ -18,7 +18,7 @@ def get_role_by():
         role = Role.query.filter_by(name=role).first()
     if role is not None:
         return jsonify(role.to_dict()), 200
-    return jsonify(status=400, message="No users with this roles.")
+    return jsonify(status=400, message="No role in database")
 
 
 @bp.route("/roles", methods=["POST"])
@@ -36,10 +36,9 @@ def create_new_role():
 @bp.route("/roles", methods=["DELETE"])
 @jwt_required
 def delete_role():
-    try:
-        role = request.args["id"]
-    except BadRequestKeyError:
-        return 400
+    role = request.args.get("id", type=int)
+    if role is None:
+        return jsonify(message="Bad args"), 403
     role = Role.query.filter_by(id=role).first()
     if role is not None:
         role.delete_by_id()
@@ -50,11 +49,15 @@ def delete_role():
 @bp.route("/roles", methods=["PUT"])
 @jwt_required
 def edit_role():
-    try:
-        data = request.get_json() or {}
-    except BadRequestKeyError:
+    data = request.get_json() or {}
+    if not data:
         return jsonify(message="No data for edit"), 400
-    role = Role.query.get_or_404(data["id"])
+    try:
+        role = Role.query.filter_by(id=data["id"]).first()
+    except KeyError:
+        return jsonify(message="Bad args"), 404
+    if not role:
+        return jsonify(message="No role with this id in database"), 404
     role = role.from_dict(data, True)
     if not role:
         return jsonify(message="Role can't be edit"), 401

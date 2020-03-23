@@ -1,9 +1,12 @@
 from web_backend import db
 
 
+def get_one_by_id(model, id):
+    return model.query.filter_by(id=id).first()
+
+
 def get_all(model):
-    data = model.query.all()
-    return data
+    return model.query.all()
 
 
 def add_instance(model, **kwargs):
