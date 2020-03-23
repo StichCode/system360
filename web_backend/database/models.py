@@ -7,9 +7,9 @@ from web_backend.database.base_models import BaseModel, BaseUser
 class User(BaseUser, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username = db.Column(db.String(64), unique=True, nullable=False)  # FIXME handle username uniqueness error
-    email = db.Column(db.String(64), unique=True, nullable=False)  # FIXME handle email uniqueness error
-    phone = db.Column(db.String(12), nullable=True, server_default='')  # FIXME handle phone uniqueness error
+    username = db.Column(db.String(64), unique=True, nullable=False)
+    email = db.Column(db.String(64), unique=True, nullable=False)
+    phone = db.Column(db.String(12), nullable=True, server_default='')
     password = db.Column(db.String(255), nullable=False)  # FIXME do unicode value
 
     first_name = db.Column(db.String(100), nullable=True, server_default='')
