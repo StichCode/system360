@@ -31,7 +31,6 @@ class BaseModel(object):
             if not edit:
                 add_instance(cls, **result)
             else:
-                print(data["id"])
                 edit_instance(cls, data["id"], result)
         except IntegrityError:
             return False

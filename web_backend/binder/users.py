@@ -2,7 +2,6 @@ import bcrypt
 
 from web_backend import db
 from web_backend.binder.franchises import franchise_by_id
-from web_backend.binder.roles import role_by_id
 from web_backend.database.models import User, Role
 
 
@@ -38,7 +37,7 @@ def users_by_role(role):
         all_users.append({
             "userId": user.id,
             "userName": user.username,
-            "role": role_by_id(user.role),
+            # "role": role_by_id(user.role),
             "firstName": user.first_name,
             "lastName": user.last_name,
             "userPhone": user.phone
@@ -84,7 +83,7 @@ def user_delete(user_id):
 
 def get_user_by_id(user_id):
     user = User.query.filter(User.id == user_id).first()
-    role = role_by_id(user.role)
+    # role = role_by_id(user.role)
     result = {
             "userId": user.id,
             "username": user.username,
@@ -92,7 +91,7 @@ def get_user_by_id(user_id):
             "phone": user.phone,
             "firstName": user.first_name,
             "lastName": user.last_name,
-            "role": role,
+            # "role": role,
             "franchise": franchise_by_id(user.franchise_id)
         }
     return result

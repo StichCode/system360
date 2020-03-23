@@ -1,35 +1,67 @@
-from flask import jsonify, request
+from flask import request, jsonify
 from flask_jwt_extended import jwt_required
 from werkzeug.exceptions import BadRequestKeyError
 
 from web_backend.api import bp
-from web_backend.binder.franchises import franchises_get, franchises_post, my_franchises_delete
+from web_backend.database.models import Franchise
 
 
 @bp.route("/franchises", methods=["GET"])
 @jwt_required
-def franchise():
-    franchises = franchises_get()
-    if franchises:
-        return jsonify(franchises), 200
+def get_franchise_by():
+    franchise = request.args.get("id", type=int) or request.args.get("title", type=str)
+    if franchise is None:
+        return get_all_franchises()
+    if isinstance(franchise, int):
+        role = Franchise.query.filter_by(id=franchise).first()
+    else:
+        role = Franchise.query.filter_by(title=franchise).first()
+    if role is not None:
+        return jsonify(role.to_dict()), 200
     return jsonify(message="No franchises in database."), 400
 
 
 @bp.route("/franchises", methods=["POST"])
 @jwt_required
-def new_franchise():
+def create_new_franchise():
     data = request.get_json() or {}
-    if not data or "title" not in data:
-        return jsonify(message="Bad parameters"), 401
-    return jsonify(franchises_post(data)), 201
+    if not data:
+        return jsonify(message="No data for create franchise"), 400
+    franchise = Franchise.from_dict(data)
+    if not franchise:
+        return jsonify(message="Franchise already exists"), 404
+    return jsonify(Franchise.query.filter_by(title=data["title"]).first().to_dict()), 200
 
 
 @bp.route("/franchises", methods=["DELETE"])
 @jwt_required
 def delete_franchise():
+    franchise = request.args.get("id", type=int)
+    if franchise is None:
+        return jsonify(message="Bad id for delete"), 400
+    franchise = Franchise.query.filter_by(id=franchise).first()
+    if franchise is not None:
+        franchise.delete_by_id()
+        return jsonify(message=f"Franchise {franchise} has been delete"), 201
+    return jsonify(message="No franchise with this id"), 400
+
+
+@bp.route("/franchises", methods=["PUT"])
+@jwt_required
+def edit_franchise():
     try:
-        franchise_id = int(request.args["id"])
+        data = request.get_json() or {}
     except BadRequestKeyError:
-        return jsonify(message="Bad parameters"), 401
-    my_franchises_delete(franchise_id)
-    return jsonify(message="Franchise hs been delete"), 201
+        return jsonify(message="No data for edit"), 400
+    franchise = Franchise.query.get_or_404(data["id"])
+    franchise = franchise.from_dict(data, True)
+    if not franchise:
+        return jsonify(message="Franchise can't be edit"), 401
+    return jsonify(Franchise.query.filter_by(id=data["id"]).first().to_dict()), 201
+
+
+def get_all_franchises():
+    franchises = [role.to_dict() for role in Franchise.query.all()]
+    if not franchises:
+        return jsonify(message="No franchises in database"), 400
+    return jsonify(franchises), 200

@@ -7,11 +7,10 @@ from web_backend.database.models import Role
 
 
 @bp.route("/roles", methods=["GET"])
-# @jwt_required
+@jwt_required
 def get_role_by():
-    try:
-        role = int(request.args["id"]) or str(request.args["name"])
-    except BadRequestKeyError:
+    role = request.args.get("id", type=int) or request.args.get("name", type=str)
+    if role is None:
         return get_all_roles()
     if isinstance(role, int):
         role = Role.query.filter_by(id=role).first()
@@ -23,7 +22,7 @@ def get_role_by():
 
 
 @bp.route("/roles", methods=["POST"])
-# @jwt_required
+@jwt_required
 def create_new_role():
     data = request.get_json() or {}
     if not data:
@@ -35,7 +34,7 @@ def create_new_role():
 
 
 @bp.route("/roles", methods=["DELETE"])
-# @jwt_required
+@jwt_required
 def delete_role():
     try:
         role = request.args["id"]
@@ -49,7 +48,7 @@ def delete_role():
 
 
 @bp.route("/roles", methods=["PUT"])
-# @jwt_required
+@jwt_required
 def edit_role():
     try:
         data = request.get_json() or {}

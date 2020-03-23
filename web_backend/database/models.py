@@ -54,7 +54,7 @@ class Objects(BaseModel, db.Model):
 class Franchise(BaseModel, db.Model):
     __tablename__ = 'franchises'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    title = db.Column(db.String(256), nullable=False)
+    title = db.Column(db.String(256), unique=True, nullable=False)
 
 
 class TypeCheckout(Enum):
