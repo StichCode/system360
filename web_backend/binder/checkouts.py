@@ -3,12 +3,12 @@ from datetime import datetime
 from web_backend import db
 from web_backend.binder.shops import shop_by_id
 from web_backend.binder.users import get_user_by_id
-from web_backend.database.models import Checkouts
+from web_backend.database.models import Checkout
 
 
 def checkouts_get_all():
     result = []
-    for checkout in Checkouts.query.all():
+    for checkout in Checkout.query.all():
         result.append({
             "id": checkout.id,
             "shop": shop_by_id(checkout.shop_id),
@@ -29,19 +29,19 @@ def checkouts_post(data):
                 result[field] = datetime.strptime(data[field], "%d-%m-%Y %H:%M:%S")
             else:
                 result[field] = data[field]
-    obj = Checkouts(**result)
+    obj = Checkout(**result)
     db.session.add(obj)
     db.session.commit()
     return obj.id
 
 
 def checkouts_delete(id_checkout):
-    Checkouts.query.filter(Checkouts.id == id_checkout).delete(synchronize_session=False)
+    Checkout.query.filter(Checkout.id == id_checkout).delete(synchronize_session=False)
     db.session.commit()
 
 
 def checkout_by_id(checkout_id):
-    checkout = Checkouts.query.filter(Checkouts.id == checkout_id).first()
+    checkout = Checkout.query.filter(Checkout.id == checkout_id).first()
     return {
         "id": checkout.id,
         "shop": shop_by_id(checkout.shop_id),

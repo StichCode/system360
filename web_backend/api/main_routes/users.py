@@ -29,7 +29,7 @@ def get_users_by_role():
         user = User.query.filter_by(username=user).first()
     if user is not None:
         return jsonify(user.to_dict()), 200
-    return jsonify(status=400, message="No user in database with this email/id/username.")
+    return jsonify(message="No user in database with this email/id/username."), 400
 
 
 @bp.route("/users", methods=["POST"])
@@ -48,7 +48,7 @@ def new_user():
     user = User.from_dict(data)
     if not user:
         return jsonify(message="User already exists"), 403
-    return jsonify(message="New user was be created"), 201
+    return jsonify(message="New user has been created"), 201
 
 
 @bp.route("/users", methods=["DELETE"])
@@ -65,7 +65,7 @@ def delete_user():
 
 
 @bp.route("/users", methods=["PUT"])
-# @jwt_required
+@jwt_required
 def edit_user():
     data = request.get_json() or {}
     if not data:

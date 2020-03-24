@@ -2,7 +2,7 @@ from flask import jsonify
 from flask_jwt_extended import jwt_required
 
 from web_backend.api import bp
-from web_backend.database.models import Role, User, Shops, Objects, Franchise, CheckoutSubTask, CheckoutTask, Checkouts
+from web_backend.database.models import Role, User, Shop, Object, Franchise, CheckoutSubTask, CheckoutTask, Checkout
 
 
 @bp.route("/keys/role", methods=["GET"])
@@ -20,13 +20,13 @@ def keys_user():
 @bp.route("/keys/shop", methods=["GET"])
 @jwt_required
 def keys_shop():
-    return jsonify(Shops.keys())
+    return jsonify(Shop.keys())
 
 
 @bp.route("/keys/object", methods=["GET"])
 @jwt_required
 def keys_object():
-    return jsonify(Objects.keys())
+    return jsonify(Object.keys())
 
 
 @bp.route("/keys/franchise", methods=["GET"])
@@ -38,7 +38,7 @@ def keys_franchise():
 @bp.route("/keys/checkout", methods=["GET"])
 @jwt_required
 def keys_checkout():
-    return jsonify(Checkouts.keys())
+    return jsonify(Checkout.keys())
 
 
 @bp.route("/keys/checkout_task", methods=["GET"])

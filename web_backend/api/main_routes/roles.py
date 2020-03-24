@@ -1,6 +1,5 @@
 from flask import request, jsonify
 from flask_jwt_extended import jwt_required
-from werkzeug.exceptions import BadRequestKeyError
 
 from web_backend.api import bp
 from web_backend.database.models import Role
@@ -18,7 +17,7 @@ def get_role_by():
         role = Role.query.filter_by(name=role).first()
     if role is not None:
         return jsonify(role.to_dict()), 200
-    return jsonify(status=400, message="No role in database")
+    return jsonify(message="No role in database"), 400
 
 
 @bp.route("/roles", methods=["POST"])

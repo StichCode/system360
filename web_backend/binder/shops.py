@@ -1,11 +1,11 @@
 from web_backend import db
 from web_backend.binder.users import get_user_by_id
-from web_backend.database.models import Shops
+from web_backend.database.models import Shop
 
 
 def get_shops_by_user(user_id):
     result = []
-    shops = Shops.query.filter_by(user_id=user_id).all()
+    shops = Shop.query.filter_by(user_id=user_id).all()
     if shops is None:
         return []
     for shop in shops:
@@ -23,7 +23,7 @@ def new_shop(data):
     for field in ["address", "phone", "user_id"]:
         if field in data:
             result[field] = data[field]
-    obj = Shops(**result)
+    obj = Shop(**result)
     db.session.add(obj)
     db.session.commit()
     return obj.id
@@ -31,7 +31,7 @@ def new_shop(data):
 
 def shops_get():
     result = []
-    for shop in Shops.query.all():
+    for shop in Shop.query.all():
         result.append({
             "shopId": shop.id,
             "address": shop.address,
@@ -42,12 +42,12 @@ def shops_get():
 
 
 def shop_delete(id_shop):
-    Shops.query.filter(Shops.id == id_shop).delete(synchronize_session=False)
+    Shop.query.filter(Shop.id == id_shop).delete(synchronize_session=False)
     db.session.commit()
 
 
 def shop_by_id(shop_id):
-    shop = Shops.query.filter(Shops.id == shop_id).first()
+    shop = Shop.query.filter(Shop.id == shop_id).first()
     return {
         "shopId": shop.id,
         "address": shop.address,
@@ -57,7 +57,7 @@ def shop_by_id(shop_id):
 
 
 def shop_by_user_id(user_id):
-    shop = Shops.query.filter(Shops.user_id == user_id).first()
+    shop = Shop.query.filter(Shop.user_id == user_id).first()
     return {
         "shopId": shop.id,
         "address": shop.address,

@@ -3,10 +3,18 @@ import re
 import bcrypt
 from sqlalchemy.exc import IntegrityError
 
-from web_backend.database.base_func import add_instance, delete_instance, edit_instance
+from web_backend.database.base_func import add_instance, delete_instance, edit_instance, get_all, get_one_by_id
 
 
 class BaseModel(object):
+
+    @classmethod
+    def get_by_id(cls):
+        return get_one_by_id(cls, cls.id)
+
+    @classmethod
+    def all_to_dict(cls):
+        return [r.to_dict() for r in get_all(cls)]
 
     def to_dict(self):
         data = {}

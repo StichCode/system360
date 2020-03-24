@@ -4,49 +4,60 @@ from werkzeug.exceptions import BadRequestKeyError
 
 from web_backend.api import bp
 from web_backend.binder.shops import new_shop, shops_get, shop_delete, get_shops_by_user
+from web_backend.database.models import Shop
 
 
 @bp.route("/shops", methods=["GET"])
-@jwt_required
+# @jwt_required
 def all_shops():
-    shops = shops_get()
-    if shops:
-        return jsonify(shops), 200
-    return jsonify(status=400, message="No shops in database.")
+    shop = request.args.to_dict()
+    q = None
+    if not shop:
+        return jsonify(Shop.all_to_dict()), 200
+    if "id" in shop:
+        q = Shop.query.filter_by(id=shop["id"]).first()
+    elif "userId" in shop:
+        q = Shop.query.filter_by(user_id=shop["userId"]).first()
+    if q is not None:
+        return jsonify(shop.to_dict()), 200
+    return jsonify(message="No shops in database."), 400
 
 
 @bp.route("/shops", methods=["POST"])
-@jwt_required
+# @jwt_required
 def create_shop():
     data = request.get_json() or {}
-    if not data:
-        return jsonify(message="Bad parameters"), 401
-    new = new_shop(data)
-    if new:
-        return jsonify(shop_id=new, message="Shop has be created"), 201
-    return jsonify(status=400, message="No shops with for this user.")
+    if "address" not in data:
+        pass
+    shop = Shop.from_dict(data)
+    if not shop:
+        return jsonify(message="Shop already exists"), 403
+    return jsonify(message="New shop has been created."), 201
 
 
 @bp.route("/shops", methods=["DELETE"])
-@jwt_required
+# @jwt_required
 def delete_shop():
-    try:
-        shop_id = request.args["objectID"]
-    except BadRequestKeyError:
-        return jsonify(message="Bad parameters"), 401
-    shop_delete(shop_id)
-    return jsonify(message=f"Shop {shop_id} has been deleted"), 201
+    shop = request.args.get("id", type=int)
+    if shop is None:
+        pass
+    q = Shop.query.filter(Shop.id == shop).first()
+    if q is not None:
+        q.delete_by_id()
+        return jsonify(message=f"Shop {q.id} has been delete."), 201
+    return jsonify(message=f"No shop with this id"), 201
 
 
-@bp.route("/shops", methods=["GET"])
-@jwt_required
+@bp.route("/shops", methods=["PUT"])
+# @jwt_required
 def get_shops():
-    try:
-        user_id = request.args["userId"]
-    except BadRequestKeyError:
-        return jsonify(message="Bad parameters"), 401
-    print(user_id)
-    shops = get_shops_by_user(user_id)
-    if shops:
-        return jsonify(shops), 201
-    return jsonify(status=400, message="No shops with for this user.")
+    data = request.get_json() or {}
+    if "id" not in data:
+        return jsonify("Bad args"), 404
+    shop = Shop.query.filter_by(id=data["id"]).first()
+    if not shop:
+        return jsonify(message="No shop with this id in database"), 201
+    shop = shop.from_dict(data, True)
+    if not shop:
+        return jsonify(message="Shop can't be edit"), 401
+    return jsonify(Shop.query.filter_by(id=data["id"]).first().to_dict()), 201
