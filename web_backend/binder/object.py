@@ -1,5 +1,5 @@
 from web_backend import db
-from web_backend.binder.shops import shop_by_id
+# from web_backend.binder.shops import shop_by_id
 from web_backend.database.models import Object
 
 
@@ -30,7 +30,7 @@ def object_get():
             "type": obj.type,
             "x": obj.x,
             "y": obj.y,
-            "shop": shop_by_id(obj.shop_id),
+            # "shop": shop_by_id(obj.shop_id),
 
         })
     return prepared_objects
@@ -60,5 +60,5 @@ def object_by_id(object_id):
             "type": obj.type,
             "x": obj.x,
             "y": obj.y,
-            "shop": shop_by_id(obj.shop_id)
+            # "shop": shop_by_id(obj.shop_id)
             }

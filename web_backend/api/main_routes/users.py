@@ -11,25 +11,23 @@ from web_backend.database.models import User
 @bp.route("/users", methods=["GET"])
 # @jwt_required
 def get_users_by_role():
-    role = request.args.get("role", type=str)
-    if role is not None:
-        users = users_by_role(role)
-        if users is None:
-            return jsonify(message="No users with this role in database"), 402
-        return jsonify(users)
-
-    user = request.args.get("id", type=int) or request.args.get("username") or request.args.get("email")
-    if user is None:
+    data = request.args.to_dict()
+    user = None
+    if not data:
         return get_all_users()
-    if isinstance(user, int):
-        user = User.query.filter_by(id=user).first()
-    elif re.findall(r"@", user):
-        user = User.query.filter_by(email=user).first()
-    else:
-        user = User.query.filter_by(username=user).first()
+    elif "id" in data:
+        user = User.query.filter_by(id=data["id"]).first()
+    elif "username" in data:
+        user = User.query.filter_by(username=data["username"]).first()
+    elif "email" in data:
+        user = User.query.filter_by(email=data["email"]).first()
+    elif "role" in data:
+        users = users_by_role(data["role"])
+        if users:
+            return jsonify(users), 200
     if user is not None:
         return jsonify(user.to_dict()), 200
-    return jsonify(message="No user in database with this email/id/username."), 400
+    return jsonify(message="No user in database with this data."), 400
 
 
 @bp.route("/users", methods=["POST"])

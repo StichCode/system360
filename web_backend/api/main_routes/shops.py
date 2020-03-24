@@ -1,9 +1,6 @@
 from flask import jsonify, request
-from flask_jwt_extended import jwt_required
-from werkzeug.exceptions import BadRequestKeyError
 
 from web_backend.api import bp
-from web_backend.binder.shops import new_shop, shops_get, shop_delete, get_shops_by_user
 from web_backend.database.models import Shop
 
 

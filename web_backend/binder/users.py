@@ -1,14 +1,6 @@
 import bcrypt
 
-from web_backend import db
-from web_backend.binder.franchises import franchise_by_id
 from web_backend.database.models import User, Role
-
-
-def hash_pw(password: str):
-    salt = bcrypt.gensalt(12)
-    hashed = bcrypt.hashpw(password.encode("ascii"), salt)
-    return hashed.decode("UTF-8")
 
 
 def verify_password(data):
@@ -33,55 +25,3 @@ def users_by_role(role):
     if users is None:
         return None
     return [user.to_dict() for user in users]
-
-
-def user_post(data):
-    role = Role.query.filter_by(name=data["role"]).first()
-    result = {}
-    for field in ["username", "email", "phone", "password", "first_name", "last_name", "role", "franchise_id"]:
-        if field == "password":
-            result[field] = hash_pw(data["password"])
-        if field in data:
-            result[field] = data[field]
-            continue
-        if field == "role":
-            result[field] = int(role.id)
-            continue
-    return User(**result)
-
-
-def user_get():
-    result = []
-    for user in User.query.all():
-        result.append({
-            "userId": user.id,
-            "username": user.username,
-            "email": user.email,
-            "phone": user.phone,
-            "firstName": user.first_name,
-            "lastName": user.last_name,
-            "role": user.role,
-            "franchise": franchise_by_id(user.franchise_id)
-        })
-    return result
-
-
-def user_delete(user_id):
-    User.query.filter(User.id == user_id).delete(synchronize_session=False)
-    db.session.commit()
-
-
-def get_user_by_id(user_id):
-    user = User.query.filter(User.id == user_id).first()
-    # role = role_by_id(user.role)
-    result = {
-            "userId": user.id,
-            "username": user.username,
-            "email": user.email,
-            "phone": user.phone,
-            "firstName": user.first_name,
-            "lastName": user.last_name,
-            # "role": role,
-            "franchise": franchise_by_id(user.franchise_id)
-        }
-    return result
