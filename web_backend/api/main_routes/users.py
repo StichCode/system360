@@ -11,23 +11,13 @@ from web_backend.database.models import User
 @bp.route("/users", methods=["GET"])
 # @jwt_required
 def get_users_by_role():
-    data = request.args.to_dict()
-    user = None
+    args = request.args.to_dict()
+    page = int(args.pop('page', 1))
+    per_page = int(args.pop('per_page', 10))
+    data = User.to_collection_dict(page, per_page, request.endpoint, **args)
     if not data:
-        return get_all_users()
-    elif "id" in data:
-        user = User.query.filter_by(id=data["id"]).first()
-    elif "username" in data:
-        user = User.query.filter_by(username=data["username"]).first()
-    elif "email" in data:
-        user = User.query.filter_by(email=data["email"]).first()
-    elif "role" in data:
-        users = users_by_role(data["role"])
-        if users:
-            return jsonify(users), 200
-    if user is not None:
-        return jsonify(user.to_dict()), 200
-    return jsonify(message="No user in database with this data."), 400
+        return jsonify(message="No data with this criteria."), 400
+    return jsonify(data), 200
 
 
 @bp.route("/users", methods=["POST"])

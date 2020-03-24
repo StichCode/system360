@@ -10,7 +10,12 @@ from web_backend.database.models import Franchise
 # @jwt_required
 def get_franchise_by():
     args = request.args.to_dict()
-    return Franchise.middle_get(args)
+    page = int(args.pop('page', 1))
+    per_page = int(args.pop('per_page', 10))
+    data = Franchise.to_collection_dict(page, per_page, request.endpoint, **args)
+    if not data:
+        return jsonify(message="No data with this criteria."), 400
+    return jsonify(data), 200
 
 
 @bp.route("/franchises", methods=["POST"])

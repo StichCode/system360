@@ -6,18 +6,15 @@ from web_backend.database.models import Role
 
 
 @bp.route("/roles", methods=["GET"])
-@jwt_required
+# @jwt_required
 def get_role_by():
-    role = request.args.get("id", type=int) or request.args.get("name", type=str)
-    if role is None:
-        return get_all_roles()
-    if isinstance(role, int):
-        role = Role.query.filter_by(id=role).first()
-    else:
-        role = Role.query.filter_by(name=role).first()
-    if role is not None:
-        return jsonify(role.to_dict()), 200
-    return jsonify(message="No role in database"), 400
+    args = request.args.to_dict()
+    page = int(args.pop('page', 1))
+    per_page = int(args.pop('per_page', 10))
+    data = Role.to_collection_dict(page, per_page, request.endpoint, **args)
+    if not data:
+        return jsonify(message="No data with this criteria."), 400
+    return jsonify(data), 200
 
 
 @bp.route("/roles", methods=["POST"])

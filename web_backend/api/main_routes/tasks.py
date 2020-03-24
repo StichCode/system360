@@ -3,15 +3,19 @@ from flask_jwt_extended import jwt_required
 from werkzeug.exceptions import BadRequestKeyError
 
 from web_backend.api import bp
+from web_backend.database.models import CheckoutTask
 
 
 @bp.route("/tasks", methods=["GET"])
 @jwt_required
 def tasks():
-    tasks_all = ...
-    if tasks_all:
-        return jsonify(tasks_all), 200
-    return jsonify(message="No tasks in database."), 400
+    args = request.args.to_dict()
+    page = int(args.pop('page', 1))
+    per_page = int(args.pop('per_page', 10))
+    data = CheckoutTask.to_collection_dict(page, per_page, request.endpoint, **args)
+    if not data:
+        return jsonify(message="No data with this criteria."), 400
+    return jsonify(data), 200
 
 
 @bp.route("/tasks", methods=["POST"])
