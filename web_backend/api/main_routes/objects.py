@@ -10,7 +10,12 @@ from web_backend.database.models import Object
 # @jwt_required
 def get_all_objects():
     args = request.args.to_dict()
-    return Object.middle_get(args)
+    page = int(args.pop('page', 1))
+    per_page = int(args.pop('per_page', 10))
+    data = Object.to_collection_dict(page, per_page, 'api.get_all_objects', **args)
+    if not data:
+        return jsonify(message="No data with this criteria."), 400
+    return jsonify(data), 200
 
 
 @bp.route("/objects", methods=["POST"])

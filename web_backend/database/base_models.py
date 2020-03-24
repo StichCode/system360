@@ -1,24 +1,41 @@
 import re
 
 import bcrypt
-from flask import jsonify
-from sqlalchemy.exc import IntegrityError
+from flask import jsonify, url_for
+from sqlalchemy.exc import IntegrityError, InvalidRequestError, DataError
 
-from web_backend.database.base_func import add_instance, delete_instance, edit_instance, get_all, get_one_by_id
+from web_backend.database.base_func import add_instance, delete_instance, edit_instance, get_all
 
 
 class BaseModel(object):
 
     @classmethod
-    def middle_get(cls, client_data):
-        if not client_data:
-            return jsonify(cls.all_to_dict())
-        query = cls.query.filter_by(**cls._prepare_dict(client_data)).all()
-        if len(query) > 1:
-            return jsonify([r.to_dict() for r in query]), 200
-        elif not query:
-            return jsonify(message="No objects"), 400
-        return jsonify(query[0].to_dict()), 200
+    def to_collection_dict(cls, page, per_page, endpoint, **kwargs):
+        if kwargs:
+            try:
+                resources = cls.query.filter_by(**cls._prepare_dict(kwargs)).paginate(page, per_page, False)
+            except (InvalidRequestError, DataError):
+                return []
+        else:
+            resources = cls.query.paginate(page, per_page, False)
+        data = {
+            'items': [item.to_dict() for item in resources.items],
+            '_meta': {
+                'page': page,
+                'per_page': per_page,
+                'total_pages': resources.pages,
+                'total_items': resources.total
+            },
+            '_links': {
+                'self': url_for(endpoint, page=page, per_page=per_page,
+                                **kwargs),
+                'next': url_for(endpoint, page=page + 1, per_page=per_page,
+                                **kwargs) if resources.has_next else None,
+                'prev': url_for(endpoint, page=page - 1, per_page=per_page,
+                                **kwargs) if resources.has_prev else None
+            }
+        }
+        return data
 
     @classmethod
     def all_to_dict(cls):
