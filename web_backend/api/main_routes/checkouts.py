@@ -22,17 +22,12 @@ def checkout():
 @jwt_required
 def new_checkout():
     data = request.get_json() or {}
-
-    if not data or "shop_id" not in data \
-            or "start" not in data\
-            or "end" not in data\
-            or "worker" not in data\
-            or "type" not in data:
-        return jsonify(message="Bad parameters"), 401
-    response = ...
-    if isinstance(response, str):
-        return jsonify(message=response), 403
-    return jsonify(message="checkout has been created"), 201
+    if not data:
+        return jsonify(message="Bad args."), 400
+    args = Checkout.from_dict(data)
+    if not args:
+        return jsonify(message="Checkout already exists"), 404
+    return jsonify(message="Checkout has been create."), 200
 
 
 @bp.route("/checkouts", methods=["DELETE"])

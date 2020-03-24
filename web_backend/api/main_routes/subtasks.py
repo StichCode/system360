@@ -1,6 +1,5 @@
 from flask import jsonify, request
 from flask_jwt_extended import jwt_required
-from werkzeug.exceptions import BadRequestKeyError
 
 from web_backend.api import bp
 from web_backend.database.models import CheckoutSubTask
@@ -22,10 +21,12 @@ def subtasks():
 @jwt_required
 def new_subtasks():
     data = request.get_json() or {}
-    if not data or "task" not in data \
-            or "title" not in data:
-        return jsonify(message="Bad parameters"), 401
-    return jsonify(message=f"Subtask  has been created"), 201
+    if not data:
+        return jsonify(message="Bad args."), 400
+    args = CheckoutSubTask.from_dict(data)
+    if not args:
+        return jsonify(message="SubTask already exists"), 404
+    return jsonify(message="SubTask has been create."), 200
 
 
 @bp.route("/subtasks", methods=["DELETE"])

@@ -23,11 +23,11 @@ def get_franchise_by():
 def create_new_franchise():
     data = request.get_json() or {}
     if not data:
-        return jsonify(message="No data for create franchise"), 400
-    franchise = Franchise.from_dict(data)
-    if not franchise:
+        return jsonify(message="Bad args."), 400
+    role = Franchise.from_dict(data)
+    if not role:
         return jsonify(message="Franchise already exists"), 404
-    return jsonify(Franchise.query.filter_by(title=data["title"]).first().to_dict()), 200
+    return jsonify(message="Franchise has been create."), 200
 
 
 @bp.route("/franchises", methods=["DELETE"])

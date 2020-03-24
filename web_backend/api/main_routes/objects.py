@@ -23,8 +23,11 @@ def get_all_objects():
 def create_object():
     data = request.get_json() or {}
     if not data:
-        jsonify(message="Bad data"), 401
-    return jsonify(message="Надо проверить работает ли, но позже"), 200
+        return jsonify(message="Bad args."), 400
+    args = Object.from_dict(data)
+    if not args:
+        return jsonify(message="Object already exists"), 404
+    return jsonify(message="Object has been create."), 200
 
 
 @bp.route("/objects", methods=["DELETE"])

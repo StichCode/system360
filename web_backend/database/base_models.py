@@ -61,7 +61,6 @@ class BaseModel(object):
             return False
         delete_instance(cls, id)
 
-
     @classmethod
     def from_dict(cls, data: dict, edit=False):
         result = {}

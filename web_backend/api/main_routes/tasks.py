@@ -22,12 +22,12 @@ def tasks():
 @jwt_required
 def new_tasks():
     data = request.get_json() or {}
-    if not data or "object_id" not in data \
-            or "checkout" not in data\
-            or "status" not in data\
-            or "title" not in data:
-        return jsonify(message="Bad parameters"), 401
-    return jsonify(message=f"checkout  has been created"), 201
+    if not data:
+        return jsonify(message="Bad args."), 400
+    args = CheckoutTask.from_dict(data)
+    if not args:
+        return jsonify(message="Task already exists"), 404
+    return jsonify(message="Task has been create."), 200
 
 
 @bp.route("/tasks", methods=["DELETE"])

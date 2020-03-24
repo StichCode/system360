@@ -33,10 +33,12 @@ def new_user():
         return jsonify(message='User with this e-mail already exists.'), 403
     if not re.findall(r"\S+@\S+", data['email']):
         return jsonify(message="Bad email"), 403
-    user = User.from_dict(data)
-    if not user:
-        return jsonify(message="User already exists"), 403
-    return jsonify(message="New user has been created"), 201
+    if not data:
+        return jsonify(message="Bad args."), 400
+    args = User.from_dict(data)
+    if not args:
+        return jsonify(message="User already exists"), 404
+    return jsonify(message="User has been create."), 200
 
 
 @bp.route("/users", methods=["DELETE"])

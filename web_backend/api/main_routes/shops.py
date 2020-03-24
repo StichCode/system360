@@ -20,12 +20,12 @@ def all_shops():
 # @jwt_required
 def create_shop():
     data = request.get_json() or {}
-    if "address" not in data:
-        pass
-    shop = Shop.from_dict(data)
-    if not shop:
-        return jsonify(message="Shop already exists"), 403
-    return jsonify(message="New shop has been created."), 201
+    if not data:
+        return jsonify(message="Bad args."), 400
+    args = Shop.from_dict(data)
+    if not args:
+        return jsonify(message="Shop already exists"), 404
+    return jsonify(message="Shop has been create."), 200
 
 
 @bp.route("/shops", methods=["DELETE"])

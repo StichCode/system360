@@ -26,7 +26,7 @@ def create_new_role():
     role = Role.from_dict(data)
     if not role:
         return jsonify(message="Role already exists"), 404
-    return jsonify(Role.query.filter_by(name=data["name"]).first().to_dict()), 200
+    return jsonify(message="Role has been create."), 200
 
 
 @bp.route("/roles", methods=["DELETE"])
@@ -46,12 +46,9 @@ def delete_role():
 @jwt_required
 def edit_role():
     data = request.get_json() or {}
-    if not data:
-        return jsonify(message="No data for edit"), 400
-    try:
-        role = Role.query.filter_by(id=data["id"]).first()
-    except KeyError:
-        return jsonify(message="Bad args"), 404
+    if not data or data.get("id") is None:
+        return jsonify(message="Bad args."), 400
+    role = Role.query.filter_by(id=data["id"]).first()
     if not role:
         return jsonify(message="No role with this id in database"), 404
     role = role.from_dict(data, True)
