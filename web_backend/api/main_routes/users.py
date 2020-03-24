@@ -4,12 +4,11 @@ from flask import request, jsonify
 from flask_jwt_extended import jwt_required
 
 from web_backend.api import bp
-from web_backend.binder.users import users_by_role
 from web_backend.database.models import User
 
 
 @bp.route("/users", methods=["GET"])
-# @jwt_required
+@jwt_required
 def get_users_by_role():
     args = request.args.to_dict()
     page = int(args.pop('page', 1))
@@ -57,22 +56,6 @@ def delete_user():
 @jwt_required
 def edit_user():
     data = request.get_json() or {}
-    if not data:
-        return jsonify(message="No data for edit"), 400
-    try:
-        user = User.query.filter_by(id=data["id"]).first()
-    except KeyError:
-        return jsonify(message="Bad args"), 404
-    if not user:
-        return jsonify(message="No user with this id in database"), 404
-    user = user.from_dict(data, True)
-    if not user:
-        return jsonify(message="User can't be edit"), 401
-    return jsonify(User.query.filter_by(id=data["id"]).first().to_dict()), 201
-
-
-def get_all_users():
-    users = [user.to_dict() for user in User.query.all()]
-    if not users:
-        return jsonify(message="No roles in database"), 400
-    return jsonify(users), 200
+    if not data and data.get("id") is not None:
+        return jsonify(message="Bad args."), 400
+    return User.global_edit(data)

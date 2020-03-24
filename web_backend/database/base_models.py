@@ -41,6 +41,16 @@ class BaseModel(object):
     def all_to_dict(cls):
         return [r.to_dict() for r in get_all(cls)]
 
+    @classmethod
+    def global_edit(cls, data):
+        record = cls.query.filter_by(id=data["id"]).first()
+        if not record:
+            return jsonify(message="No data with this <id> in database"), 404
+        new_record = record.from_dict(data, True)
+        if not new_record:
+            return jsonify(message="This data can't be change"), 401
+        return jsonify(message="Data has been changed"), 201
+
     def to_dict(self):
         data = {}
         for attr, column in self.__mapper__.c.items():

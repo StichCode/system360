@@ -48,17 +48,4 @@ def edit_role():
     data = request.get_json() or {}
     if not data or data.get("id") is None:
         return jsonify(message="Bad args."), 400
-    role = Role.query.filter_by(id=data["id"]).first()
-    if not role:
-        return jsonify(message="No role with this id in database"), 404
-    role = role.from_dict(data, True)
-    if not role:
-        return jsonify(message="Role can't be edit"), 401
-    return jsonify(Role.query.filter_by(id=data["id"]).first().to_dict()), 201
-
-
-def get_all_roles():
-    roles = [role.to_dict() for role in Role.query.all()]
-    if not roles:
-        return jsonify(message="No roles in database"), 400
-    return jsonify(roles), 200
+    return Role.global_edit(data)

@@ -1,13 +1,12 @@
 from flask import request, jsonify
 from flask_jwt_extended import jwt_required
-from werkzeug.exceptions import BadRequestKeyError
 
 from web_backend.api import bp
 from web_backend.database.models import Object
 
 
 @bp.route("/objects", methods=["GET"])
-# @jwt_required
+@jwt_required
 def get_all_objects():
     args = request.args.to_dict()
     page = int(args.pop('page', 1))
@@ -44,7 +43,8 @@ def del_object():
 
 @bp.route("/objects", methods=["PUT"])
 @jwt_required
-def change_object():
-    return jsonify(messag="ЕЩЁ НЕ РАБОТАЕТ ВОВА"), 200
-
-
+def edit_object():
+    data = request.get_json() or {}
+    if not data or data.get("id") is None:
+        return jsonify(message="Bad args."), 400
+    return Object.global_edit(data)

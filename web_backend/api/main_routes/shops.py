@@ -1,11 +1,12 @@
 from flask import jsonify, request
+from flask_jwt_extended import jwt_required
 
 from web_backend.api import bp
 from web_backend.database.models import Shop
 
 
 @bp.route("/shops", methods=["GET"])
-# @jwt_required
+@jwt_required
 def all_shops():
     args = request.args.to_dict()
     page = int(args.pop('page', 1))
@@ -17,7 +18,7 @@ def all_shops():
 
 
 @bp.route("/shops", methods=["POST"])
-# @jwt_required
+@jwt_required
 def create_shop():
     data = request.get_json() or {}
     if not data:
@@ -29,7 +30,7 @@ def create_shop():
 
 
 @bp.route("/shops", methods=["DELETE"])
-# @jwt_required
+@jwt_required
 def delete_shop():
     shop = request.args.get("id", type=int)
     if shop is None:
@@ -41,15 +42,9 @@ def delete_shop():
 
 
 @bp.route("/shops", methods=["PUT"])
-# @jwt_required
-def get_shops():
+@jwt_required
+def edit_shop():
     data = request.get_json() or {}
-    if "id" not in data:
-        return jsonify("Bad args"), 404
-    shop = Shop.query.filter_by(id=data["id"]).first()
-    if not shop:
-        return jsonify(message="No shop with this id in database"), 201
-    shop = shop.from_dict(data, True)
-    if not shop:
-        return jsonify(message="Shop can't be edit"), 401
-    return jsonify(Shop.query.filter_by(id=data["id"]).first().to_dict()), 201
+    if not data or data.get("id") is None:
+        return jsonify(message="Bad args."), 400
+    return Shop.global_edit(data)

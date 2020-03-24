@@ -39,3 +39,12 @@ def delete_subtasks():
     if d is not None:
         return jsonify(message=f"No subTask with this id"), 201
     return jsonify(message=f"SubTask has been delete."), 201
+
+
+@bp.route("/subtasks", methods=["PUT"])
+@jwt_required
+def edit_subtasks():
+    data = request.get_json() or {}
+    if not data or data.get("id") is None:
+        return jsonify(message="Bad args."), 400
+    return CheckoutSubTask.global_edit(data)

@@ -1,6 +1,5 @@
 from flask import jsonify, request
 from flask_jwt_extended import jwt_required
-from werkzeug.exceptions import BadRequestKeyError
 
 from web_backend.api import bp
 from web_backend.database.models import CheckoutTask
@@ -40,3 +39,12 @@ def delete_tasks():
     if d is not None:
         return jsonify(message=f"No task with this id"), 201
     return jsonify(message=f"Task has been delete."), 201
+
+
+@bp.route("/tasks", methods=["PUT"])
+@jwt_required
+def edit_task():
+    data = request.get_json() or {}
+    if not data or data.get("id") is None:
+        return jsonify(message="Bad args."), 400
+    return CheckoutTask.global_edit(data)

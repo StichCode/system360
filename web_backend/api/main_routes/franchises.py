@@ -1,13 +1,12 @@
 from flask import request, jsonify
 from flask_jwt_extended import jwt_required
-from werkzeug.exceptions import BadRequestKeyError
 
 from web_backend.api import bp
 from web_backend.database.models import Franchise
 
 
 @bp.route("/franchises", methods=["GET"])
-# @jwt_required
+@jwt_required
 def get_franchise_by():
     args = request.args.to_dict()
     page = int(args.pop('page', 1))
@@ -45,19 +44,7 @@ def delete_franchise():
 @bp.route("/franchises", methods=["PUT"])
 @jwt_required
 def edit_franchise():
-    try:
-        data = request.get_json() or {}
-    except BadRequestKeyError:
-        return jsonify(message="No data for edit"), 400
-    franchise = Franchise.query.get_or_404(data["id"])
-    franchise = franchise.from_dict(data, True)
-    if not franchise:
-        return jsonify(message="Franchise can't be edit"), 401
-    return jsonify(Franchise.query.filter_by(id=data["id"]).first().to_dict()), 201
-
-
-def get_all_franchises():
-    franchises = [role.to_dict() for role in Franchise.query.all()]
-    if not franchises:
-        return jsonify(message="No franchises in database"), 400
-    return jsonify(franchises), 200
+    data = request.get_json() or {}
+    if not data or data.get("id") is None:
+        return jsonify(message="Bad args."), 400
+    return Franchise.global_edit(data)
