@@ -7,17 +7,8 @@ from web_backend.database.models import Shop
 @bp.route("/shops", methods=["GET"])
 # @jwt_required
 def all_shops():
-    shop = request.args.to_dict()
-    q = None
-    if not shop:
-        return jsonify(Shop.all_to_dict()), 200
-    if "id" in shop:
-        q = Shop.query.filter_by(id=shop["id"]).first()
-    elif "userId" in shop:
-        q = Shop.query.filter_by(user_id=shop["userId"]).first()
-    if q is not None:
-        return jsonify(shop.to_dict()), 200
-    return jsonify(message="No shops in database."), 400
+    args = request.args.to_dict()
+    return Shop.middle_get(args)
 
 
 @bp.route("/shops", methods=["POST"])

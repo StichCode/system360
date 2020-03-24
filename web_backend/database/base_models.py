@@ -1,6 +1,7 @@
 import re
 
 import bcrypt
+from flask import jsonify
 from sqlalchemy.exc import IntegrityError
 
 from web_backend.database.base_func import add_instance, delete_instance, edit_instance, get_all, get_one_by_id
@@ -9,8 +10,15 @@ from web_backend.database.base_func import add_instance, delete_instance, edit_i
 class BaseModel(object):
 
     @classmethod
-    def get_by_id(cls):
-        return get_one_by_id(cls, cls.id)
+    def middle_get(cls, client_data):
+        if not client_data:
+            return jsonify(cls.all_to_dict())
+        query = cls.query.filter_by(**cls._prepare_dict(client_data)).all()
+        if len(query) > 1:
+            return jsonify([r.to_dict() for r in query]), 200
+        elif not query:
+            return jsonify(message="No objects"), 400
+        return jsonify(query[0].to_dict()), 200
 
     @classmethod
     def all_to_dict(cls):

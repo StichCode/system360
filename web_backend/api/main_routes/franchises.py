@@ -7,18 +7,10 @@ from web_backend.database.models import Franchise
 
 
 @bp.route("/franchises", methods=["GET"])
-@jwt_required
+# @jwt_required
 def get_franchise_by():
-    franchise = request.args.get("id", type=int) or request.args.get("title", type=str)
-    if franchise is None:
-        return get_all_franchises()
-    if isinstance(franchise, int):
-        role = Franchise.query.filter_by(id=franchise).first()
-    else:
-        role = Franchise.query.filter_by(title=franchise).first()
-    if role is not None:
-        return jsonify(role.to_dict()), 200
-    return jsonify(message="No franchises in database."), 400
+    args = request.args.to_dict()
+    return Franchise.middle_get(args)
 
 
 @bp.route("/franchises", methods=["POST"])

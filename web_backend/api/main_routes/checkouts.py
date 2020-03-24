@@ -3,13 +3,12 @@ from flask_jwt_extended import jwt_required
 from werkzeug.exceptions import BadRequestKeyError
 
 from web_backend.api import bp
-from web_backend.binder.checkouts import checkouts_post, checkouts_get_all, checkouts_delete
 
 
 @bp.route("/checkouts", methods=["GET"])
 @jwt_required
 def checkout():
-    checkouts = checkouts_get_all()
+    checkouts = ...
     print(checkouts)
     if checkouts:
         return jsonify(checkouts), 200
@@ -27,7 +26,7 @@ def new_checkout():
             or "worker" not in data\
             or "type" not in data:
         return jsonify(message="Bad parameters"), 401
-    response = checkouts_post(data)
+    response = ...
     if isinstance(response, str):
         return jsonify(message=response), 403
     return jsonify(message="checkout has been created"), 201
@@ -40,5 +39,4 @@ def delete_checkout():
         checkouts_id = int(request.args["id"])
     except BadRequestKeyError:
         return jsonify(message="Bad parameters"), 401
-    checkouts_delete(checkouts_id)
     return jsonify(message="Franchise hs been delete"), 201
