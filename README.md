@@ -9,64 +9,18 @@
 ##### Urls of project:
     POST /api/auth
     POST /api/refresh
-    
-    GET /api/users?role=Manager
-    
-    GET /api/shops?userId=1
-    
-    GET /api/map?shopId=1
-    
-    
+   
 ##### Urls for API:
-    GET    /api/franchises
-    POST   /api/franchises
-    DELETE /api/franchises?id=?
-    PUT    /api/franchises
+    GET, POST, PUT, DELETE (all data with pagination and data with criterie):    
+        /api/franchises
+        /api/users 
+        /api/objects
+        /api/shops
+        /api/checkouts
+        /api/tasks
+        /api/subtasks    
     
-    GET    /api/users
-    POST   /api/users
-    DELETE /api/users?id=?
-    PUT    /api/users
-    
-    GET    /api/objects
-    POST   /api/objects
-    DELETE /api/objects?id=?
-    PUT    /api/objects
-    
-    GET    /api/shops
-    POST   /api/shops
-    DELETE /api/shops
-    PUT    /api/shops
-    
-    GET    /api/checkouts
-    POST   /api/checkouts   
-    DELETE /api/checkouts?id=? 
-    
-    GET    /api/tasks
-    POST   /api/tasks
-    DELETE /api/tasks?id=?
-    
-    GET    /api/subtasks
-    POST   /api/subtasks
-    DELETE /api/subtasks?id=?
-    
-    
-    GET    /api/roles?test=true
-    
-    
-##### Fields for create anything
 
-    Keys to dict you can checked on:
-    
-    GET:
-        ROLE                /keys/role
-        USER                /keys/user
-        SHOP                /keys/shop
-        OBJECT              /keys/object
-        FRANCHISE           /keys/franchise
-        CHECKOUT            /keys/checkout
-        CHECKOUT TASK       /keys/checkout_task
-        CHECOUT SUB TASK    /keys/checkout_sub_task
     
 ##### ENV for project
      FLASK_CONFIG            config.BaseConfig
