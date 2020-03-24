@@ -33,12 +33,11 @@ def create_shop():
 def delete_shop():
     shop = request.args.get("id", type=int)
     if shop is None:
-        pass
-    q = Shop.query.filter(Shop.id == shop).first()
-    if q is not None:
-        q.delete_by_id()
-        return jsonify(message=f"Shop {q.id} has been delete."), 201
-    return jsonify(message=f"No shop with this id"), 201
+        return jsonify(message="Bad args."), 200
+    d = Shop.delete_by_id(shop)
+    if not d:
+        return jsonify(message=f"No shop with this id"), 201
+    return jsonify(message=f"Shop has been delete."), 201
 
 
 @bp.route("/shops", methods=["PUT"])

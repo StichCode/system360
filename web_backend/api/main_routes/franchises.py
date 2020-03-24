@@ -33,14 +33,13 @@ def create_new_franchise():
 @bp.route("/franchises", methods=["DELETE"])
 @jwt_required
 def delete_franchise():
-    franchise = request.args.get("id", type=int)
-    if franchise is None:
-        return jsonify(message="Bad id for delete"), 400
-    franchise = Franchise.query.filter_by(id=franchise).first()
-    if franchise is not None:
-        franchise.delete_by_id()
-        return jsonify(message=f"Franchise {franchise} has been delete"), 201
-    return jsonify(message="No franchise with this id"), 400
+    args = request.args.get("id", type=int)
+    if args is None:
+        return jsonify(message="Bad args."), 200
+    d = Franchise.delete_by_id(args)
+    if d is not None:
+        return jsonify(message=f"No franchise with this id"), 201
+    return jsonify(message=f"Franchise has been delete."), 201
 
 
 @bp.route("/franchises", methods=["PUT"])

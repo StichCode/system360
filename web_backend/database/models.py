@@ -48,7 +48,7 @@ class Object(BaseModel, db.Model):
     type = db.Column(db.String(64), nullable=False)
     x = db.Column(db.Integer, nullable=False)
     y = db.Column(db.Integer, nullable=False)
-    shop_id = db.Column(db.Integer, db.ForeignKey('shops.id'), nullable=False)
+    shop_id = db.Column(db.Integer, db.ForeignKey('shops.id'),nullable=False)
 
 
 class Franchise(BaseModel, db.Model):

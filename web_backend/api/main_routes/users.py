@@ -42,14 +42,13 @@ def new_user():
 @bp.route("/users", methods=["DELETE"])
 @jwt_required
 def delete_user():
-    user = request.args.get("id", type=int)
-    if user is None:
-        return jsonify(message="Bad parameters"), 401
-    user = User.query.filter_by(id=user).first()
-    if user is not None:
-        user.delete_by_id()
-        return jsonify(message=f"User {user} has been delete"), 201
-    return jsonify(message="No user with this id"), 400
+    args = request.args.get("id", type=int)
+    if args is None:
+        return jsonify(message="Bad args."), 200
+    d = User.delete_by_id(args)
+    if d is not None:
+        return jsonify(message=f"No user with this id"), 201
+    return jsonify(message=f"User has been delete."), 201
 
 
 @bp.route("/users", methods=["PUT"])

@@ -47,8 +47,20 @@ class BaseModel(object):
             data[self._snake_to_camel(column.key)] = getattr(self, attr)
         return data
 
-    def delete_by_id(self):
-        delete_instance(self, self.id)
+    @classmethod
+    def _exist(cls, id):
+        if cls.query.filter(cls.id == id).first() is not None:
+            return True
+        return False
+
+    @classmethod
+    def delete_by_id(cls, id):
+        e = cls._exist(id)
+        print(e)
+        if not e:
+            return False
+        delete_instance(cls, id)
+
 
     @classmethod
     def from_dict(cls, data: dict, edit=False):

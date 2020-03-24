@@ -16,7 +16,7 @@ def add_instance(model, **kwargs):
 
 
 def delete_instance(model, id):
-    model.query.filter_by(id=id).delete()
+    model.query.filter_by(id=id).delete(synchronize_session=False)
     commit_changes()
 
 

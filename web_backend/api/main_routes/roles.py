@@ -6,7 +6,7 @@ from web_backend.database.models import Role
 
 
 @bp.route("/roles", methods=["GET"])
-# @jwt_required
+@jwt_required
 def get_role_by():
     args = request.args.to_dict()
     page = int(args.pop('page', 1))
@@ -32,14 +32,14 @@ def create_new_role():
 @bp.route("/roles", methods=["DELETE"])
 @jwt_required
 def delete_role():
-    role = request.args.get("id", type=int)
-    if role is None:
-        return jsonify(message="Bad args"), 403
-    role = Role.query.filter_by(id=role).first()
-    if role is not None:
-        role.delete_by_id()
-        return jsonify(message=f"Role {role} has been delete"), 201
-    return jsonify(message="No role with this id"), 400
+    args = request.args.get("id", type=int)
+    if args is None:
+        return jsonify(message="Bad args."), 200
+    d = Role.delete_by_id(args)
+    print(d)
+    if d is not None:
+        return jsonify(message=f"No role with this id"), 201
+    return jsonify(message=f"Role has been delete."), 201
 
 
 @bp.route("/roles", methods=["PUT"])

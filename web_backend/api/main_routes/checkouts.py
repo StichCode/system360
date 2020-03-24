@@ -38,8 +38,10 @@ def new_checkout():
 @bp.route("/checkouts", methods=["DELETE"])
 @jwt_required
 def delete_checkout():
-    try:
-        checkouts_id = int(request.args["id"])
-    except BadRequestKeyError:
-        return jsonify(message="Bad parameters"), 401
-    return jsonify(message="Franchise hs been delete"), 201
+    args = request.args.get("id", type=int)
+    if args is None:
+        return jsonify(message="Bad args."), 200
+    d = Checkout.delete_by_id(args)
+    if d is not None:
+        return jsonify(message=f"No checkout with this id"), 201
+    return jsonify(message=f"Checkout has been delete."), 201

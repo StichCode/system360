@@ -30,12 +30,13 @@ def create_object():
 @bp.route("/objects", methods=["DELETE"])
 @jwt_required
 def del_object():
-    try:
-        obj_id = request.args["objectID"]
-    except BadRequestKeyError:
-        return jsonify(message="Bad parameters"), 401
-    # object_delete(obj_id)
-    return jsonify(message=f"Object {obj_id} has been deleted"), 201
+    args = request.args.get("id", type=int)
+    if args is None:
+        return jsonify(message="Bad args."), 200
+    d = Object.delete_by_id(args)
+    if d is not None:
+        return jsonify(message=f"No object with this id"), 201
+    return jsonify(message=f"Object has been delete."), 201
 
 
 @bp.route("/objects", methods=["PUT"])

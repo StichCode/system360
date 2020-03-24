@@ -31,9 +31,10 @@ def new_subtasks():
 @bp.route("/subtasks", methods=["DELETE"])
 @jwt_required
 def delete_subtasks():
-    try:
-        task_id = int(request.args["id"])
-    except BadRequestKeyError:
-        return jsonify(message="Bad parameters"), 401
-    # subtasks_delete(task_id)
-    return jsonify(message=f"Subtask {task_id} has been delete"), 201
+    args = request.args.get("id", type=int)
+    if args is None:
+        return jsonify(message="Bad args."), 200
+    d = CheckoutSubTask.delete_by_id(args)
+    if d is not None:
+        return jsonify(message=f"No subTask with this id"), 201
+    return jsonify(message=f"SubTask has been delete."), 201
