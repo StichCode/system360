@@ -1,1 +1,1 @@
-from web_backend.api.main_routes import roles, franchises, users, objects, shops, tasks, subtasks, checkouts
+from web_backend.api.main_data import roles, franchises, users, objects, shops, tasks, subtasks, checkouts
