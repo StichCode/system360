@@ -7,8 +7,8 @@ from web_backend.database.base_models import BaseModel, BaseUser
 class User(BaseUser, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username = db.Column(db.String(64), index=True, unique=True, nullable=False)
-    email = db.Column(db.String(64), index=True, unique=True, nullable=False)
+    username = db.Column(db.String(64), unique=True, nullable=False)
+    email = db.Column(db.String(64), unique=True, nullable=False)
     phone = db.Column(db.String(12), nullable=True, server_default='')
     password = db.Column(db.String(255), nullable=False)  # FIXME do unicode value
 
@@ -30,7 +30,7 @@ class Role(BaseModel, db.Model):
     """
     __tablename__ = 'roles'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String(50), index=True, unique=True)
+    name = db.Column(db.String(50), unique=True)
 
 
 class Shop(BaseModel, db.Model):
@@ -48,7 +48,7 @@ class Object(BaseModel, db.Model):
     type = db.Column(db.String(64), nullable=False)
     x = db.Column(db.Integer, nullable=False)
     y = db.Column(db.Integer, nullable=False)
-    shop_id = db.Column(db.Integer, db.ForeignKey('shops.id'),nullable=False)
+    shop_id = db.Column(db.Integer, db.ForeignKey('shops.id'), nullable=False)
 
 
 class Franchise(BaseModel, db.Model):
