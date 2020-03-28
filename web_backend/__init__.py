@@ -1,5 +1,3 @@
-import os
-
 from flask import Flask
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
@@ -12,10 +10,10 @@ db = SQLAlchemy()
 migrate = Migrate()
 jwt = JWTManager()
 cors = CORS()
+app = Flask(__name__)
 
 
 def create_app():
-    app = Flask(__name__)
     app.debug = True
     app.config.from_object(Config)
     db.init_app(app)
@@ -31,3 +29,4 @@ def create_app():
 
 
 from web_backend.database import models
+from web_backend import files

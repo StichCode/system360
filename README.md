@@ -12,6 +12,7 @@
    
 ##### Urls for API:
     GET, POST, PUT, DELETE (all data with pagination and data with criterie):    
+        /api/roles
         /api/franchises
         /api/users 
         /api/objects

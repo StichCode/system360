@@ -83,6 +83,7 @@ class CheckoutTask(BaseModel, db.Model):
     checkout = db.Column(db.Integer, db.ForeignKey('checkouts.id'), nullable=False)
     status = db.Column(db.Boolean, nullable=False, comment="статус задачи")
     title = db.Column(db.String(100), nullable=False, comment="название задачи")
+    assessment = db.Column(db.Float, nullable=True, comment="оценка данной проверки")  # только для аудиторов
 
 
 class CheckoutSubTask(BaseModel, db.Model):
@@ -90,3 +91,4 @@ class CheckoutSubTask(BaseModel, db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     task = db.Column(db.Integer, db.ForeignKey('tasks.id'), nullable=False)
     title = db.Column(db.String(256), nullable=False, comment="название подзадачи")
+    data_checkout = db.Column(db.JSON, nullable=True, comment="данные используемые для подзадач")
