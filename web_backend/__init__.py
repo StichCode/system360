@@ -10,10 +10,10 @@ db = SQLAlchemy()
 migrate = Migrate()
 jwt = JWTManager()
 cors = CORS()
-app = Flask(__name__)
 
 
 def create_app():
+    app = Flask(__name__)
     app.debug = True
     app.config.from_object(Config)
     db.init_app(app)

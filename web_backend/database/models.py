@@ -1,4 +1,4 @@
-from enum import Enum
+ from enum import Enum
 
 from web_backend import db
 from web_backend.database.base_models import BaseModel, BaseUser

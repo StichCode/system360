@@ -1,8 +1,10 @@
 import os
 
-from flask import request, abort, jsonify, send_from_directory
+from flask import request, abort, jsonify, send_from_directory, Flask
 
-from web_backend import app
+# from web_backend import app
+
+app = Flask(__name__)
 
 UPLOAD_DIRECTORY = "api_uploaded_files/"
 
